@@ -1,0 +1,30 @@
+---
+title: "Purpose"
+---
+
+```markdown
+---
+title: "Purpose"
+---
+
+The purpose of this user guide is to instruct developers and researchers on how to use the Census Data Application Programming Interface (API) to request data from U.S. Census Bureau datasets.
+
+Applications built on Census data typically take advantage of three underlying services: Census Data API, TIGERweb REST Services and the Geocoder REST Services:
+
+### Census Data API
+
+The [Census Data Application Programming Interface (API)](https://www.census.gov/data/developers/updates/new-discovery-tool.html) is an API that gives the public access to raw statistical data from various Census Bureau data programs. In terms of space, we aggregate the data and usually associate them with a certain Census geographic boundary/area
+defined by a FIPS code. In terms of time, we associate the data with a specific vintage (reference year).
+
+### TIGERweb
+
+[TIGERweb GeoServices REST API](https://www.census.gov/data/developers/data-sets/TIGERweb-map-service.html) provides Census area boundaries/shapes referenced by FIPS codes. This service can take two types of parameters to return one or more Census boundaries: a FIPS code or a latitude/longitude pair. FIPS codes are 12-digit codes that are hierarchical in code so that the higher numbers define higher-level geographies and lower numbers define lower-level geographies.
+
+### Geocoder
+
+Our publicly available [Geocoding Services API](https://www.census.gov/data/developers/data-sets/Geocoding-services.html) translates addresses and other location formats into latitude/longitude parameters, which are then fed into the TIGERweb REST services to request a Census boundary.
+
+### Focus: Census Data API
+
+The primary purpose of this guide is to cover the Census Data API. To learn more about the geography APIs, please visit the links included above.
+```

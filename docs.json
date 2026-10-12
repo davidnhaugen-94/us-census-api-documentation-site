@@ -11,10 +11,12 @@
   "navigation": {
     "pages": [
       {
-        "group": "Getting Started",
+        "group": "US Census Data API",
         "pages": [
-          "index",
-          "quickstart"
+          "purpose",
+          "what-is-the-census-data-api",
+          "available-datasets",
+          "core-concepts"
         ]
       }
     ],
