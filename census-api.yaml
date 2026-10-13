@@ -1,0 +1,528 @@
+openapi: 3.1.0
+ 
+info:
+  title: Census Data API
+  description: >-
+    This is an unofficial OpenAPI description of the U.S. Census Bureau's Census Data API, created from the Census Data API User Guide (PDF, July 30, 2024). It is not affiliated with or endorsed by the U.S. Census Bureau.
+ 
+    The Census Data API gives the public access to raw statistical data from Census Bureau data programs. The data is usually tied to a geographic area (identified by a FIPS code) and a vintage (reference year).
+  # Note: the Census Data API doesn't publish a version number. This is the version of this spec document.
+  version: 0.1.0
+  license:
+    name: CC0 1.0 (public domain)
+    url: https://creativecommons.org/publicdomain/zero/1.0/
+ 
+servers:
+  - url: https://api.census.gov/data
+    description: Census Data API production server
+ 
+security:
+  - censusApiKey: []
+
+tags:
+  - name: Population Estimates
+    description: >-
+      Population Estimates datasets, such as Estimates by Age Group, Sex, Race, and Hispanic Origin.
+  - name: American Community Survey
+    description: >-
+      American Community Survey (ACS) datasets, such as ACS 1-Year data.
+  - name: International Trade
+    description: >-
+      International Trade time series datasets, such as Monthly U.S. Exports by End-Use Code.
+ 
+paths:
+ 
+  /{year}/pep/charagegroups:
+    parameters:
+      - name: year
+        in: path
+        required: true
+        description: >-
+          The data year: the year the data were estimated. This dataset is available for 2015 through 2019, for example `2019`. Other years return a 404 error.
+        # Verified in the API Discovery Tool and testing (October 2026).
+        schema:
+          type: integer
+        example: 2019
+ 
+    get:
+      operationId: getPopEstimatesByCharacteristics
+      tags:
+        - Population Estimates
+      summary: Get population estimates by age group, sex, race, and Hispanic origin
+      description: >-
+        Returns data from the dataset *Population Estimates: Estimates by Age Group, Sex, Race, and Hispanic Origin* for the year you specify.
+  
+        Use `get` to choose variables (for example, `NAME` for the geography name and `POP` for the total population), add predicates such as `HISP` to filter the results, and use `for` to choose geographies. This dataset provides results at the state, county, and national level only. Use `for=us:*` for the national total. The geographies available can change from year to year.
+ 
+        For the full list of variables, see the [variables page](https://api.census.gov/data/2019/pep/charagegroups/variables.html). For available geographies and more queries, see the [examples page](https://api.census.gov/data/2019/pep/charagegroups/examples.html).
+  
+        **Example request:** Hispanic population by state, 2019:
+  
+        `GET /2019/pep/charagegroups?get=NAME,POP&HISP=2&for=state:*`    
+      # Verified on the examples page and in testing (October 2026).
+      parameters:
+        - name: get
+          in: query
+          required: true
+          description: >-
+            The variables to return, separated by commas with no spaces, for example `NAME,POP`. Up to 50 variables. See the dataset's variables page for the full list.
+          schema:
+            type: string
+          example: NAME,POP
+        - name: HISP
+          in: query
+          required: false
+          description: >-
+            Filters results by Hispanic origin:
+ 
+ 
+            - `0`: Total population
+ 
+            - `1`: Non-Hispanic
+ 
+            - `2`: Hispanic
+ 
+ 
+            See the [HISP variable](https://api.census.gov/data/2019/pep/charagegroups/variables/HISP.json) in the API Discovery Tool, or the [Population Estimates categorical variables](https://www.census.gov/data/developers/data-sets/popest-popproj/popest/popest-vars.Vintage_2019.html) page. If you leave out `HISP`, the API returns the total population (the same values as `HISP=0`), without a `HISP` column in the response.
+          # Verified in testing (October 2026).
+          schema:
+            type: string
+            enum: ["0", "1", "2"]
+          example: "2"
+        - $ref: '#/components/parameters/for'
+        - $ref: '#/components/parameters/in'
+        - $ref: '#/components/parameters/ucgid'
+      responses:
+        '200':
+          description: >-
+            Query results. The first row holds the column names; each following row holds the values for one geography.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataResponse'
+              examples:
+                hispanicPopulationByState:
+                  summary: Hispanic population by state, 2019
+                  description: >-
+                    Response to `GET /2019/pep/charagegroups?get=NAME,POP&HISP=2&for=state:*`. The source shows only these rows; the full response includes every state.
+                  value:
+                    - [NAME, POP, HISP, state]
+                    - [Mississippi, "100110", "2", "28"]
+                    - [Missouri, "268708", "2", "29"]
+                    - [Montana, "43289", "2", "30"]
+                    - [Nebraska, "219645", "2", "31"]
+                    - [Nevada, "900600", "2", "32"]
+                    - [New Hampshire, "54589", "2", "33"]
+                    - [New Jersey, "1856844", "2", "34"]
+                    - [New Mexico, "1032942", "2", "35"]
+                    - [New York, "3751058", "2", "36"]
+        '204':
+          $ref: '#/components/responses/NoContent'
+        '302':
+          $ref: '#/components/responses/KeyRedirect'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /{year}/acs/acs1:
+    parameters:
+      - name: year
+        in: path
+        required: true
+        description: >-
+          The data year, for example `2024`. ACS 1-Year data is available for 2005 through 2024, except 2020: the Census Bureau did not release standard 2020 1-Year estimates because the pandemic disrupted data collection.
+
+          Requesting an unavailable year doesn't always return an error. For 2004, the API returns 200 OK with a JSON description of the other ACS 1-Year datasets for that year (Public Use Microdata Sample), not data rows. Check that the response is an array before reading it.
+        # Verified in the API Discovery Tool and testing (October 2026).
+        schema:
+          type: integer
+        example: 2024
+
+    get:
+      operationId: getAcs1YearData
+      tags:
+        - American Community Survey
+      summary: Get American Community Survey 1-Year data
+      description: >-
+        Returns data from the American Community Survey (ACS) 1-Year dataset for the year you specify.
+
+        Use `get` to choose variables, or `get=group(TABLE_ID)` to return every variable in a table, even if it has more than 50 variables. Use `for` to choose geographies.
+
+        **Variable naming conventions**
+
+        ACS variable names are alphanumeric codes, for example `B02015_009E`. The last characters tell you what kind of value the variable holds:
+
+        - `E`: Estimate, based on the sample surveyed
+
+        - `M`: Margin of error for the estimate. The smaller the sample size, the greater the margin of error.
+
+        - `EA` and `MA`: Annotations for the estimate and margin of error. When an annotation is present (not `null`), use it instead of the `E` or `M` value. Group calls return these automatically.
+
+        - `PE` and `PM`: Percentage estimate and its margin of error (some ACS datasets only)
+
+        In the API Discovery Tool, `M`, `EA`, and `MA` variables are listed as attributes of their `E` variable. You request them the same way as any other variable: by name, in `get`.
+
+        For details, see the [ACS Variable Types page](https://www.census.gov/data/developers/data-sets/acs-1year/notes-on-acs-api-variable-types.html).
+
+        **Null values**
+
+        A value of `null` means no data was entered for that answer.
+
+        For the full list of variables, see the [variables page](https://api.census.gov/data/2019/acs/acs1/variables.html).  For available geographies and more queries, see the [examples page](https://api.census.gov/data/2019/acs/acs1/examples.html).
+      # EA/MA definitions from the Census Bureau's ACS Variable Types page (checked October 2026).
+      # The source calls B02015_009M "an attribute" but treats M as part of a variable name. Both are correct: the Discovery Tool lists it as an attribute, and requests use it as a variable. Clarified above.
+      parameters:
+        - name: get
+          in: query
+          required: true
+          description: >-
+            The variables to return, separated by commas with no spaces, for example `NAME,B02015_009E`. Up to 50 variables, or use `group(TABLE_ID)` to return every variable in a table, for example
+            `group(B02015)`. See the dataset's variables page for the full list.
+          schema:
+            type: string
+          example: NAME,B02015_009E
+        - $ref: '#/components/parameters/for'
+        - $ref: '#/components/parameters/in'
+        - $ref: '#/components/parameters/ucgid'
+      responses:
+        '200':
+          description: >-
+            Query results. The first row holds the column names; each following row holds the values for one geography.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataResponse'
+              examples:
+                hmongPopulationByState:
+                  summary: Hmong population by state, 2019
+                  description: >-
+                    Response to `GET /2019/acs/acs1?get=NAME,B02015_009E,B02015_009M&for=state:*`. `B02015_009E` is the estimated number of Hmong people, and `B02015_009M` is its margin of error. The source shows only these rows; the full response includes every state.
+                  value:
+                    - [NAME, B02015_009E, B02015_009M, state]
+                    - [Illinois, "655", "511", "17"]
+                    - [Georgia, "3162", "1336", "13"]
+                    - [Idaho, null, null, "16"]
+                    - [Hawaii, "56", "92", "15"]
+                    - [Indiana, "1344", "1198", "18"]
+                    - [Iowa, "685", "705", "19"]
+                    - [Kansas, "2189", "1177", "20"]
+                    - [Kentucky, "530", "503", "21"]
+                    - [Louisiana, "0", "224", "22"]
+                    - [Maine, null, null, "23"]
+                groupCallTableB02015:
+                  summary: All variables in table B02015 by state, 2019 (group call)
+                  description: >-
+                    Response to `GET /2019/acs/acs1?get=group(B02015)&for=state:*`. A group call returns every variable in the table: here, 100 data columns plus `GEO_ID`, `NAME`, and `state`. The source shows only the first state (Illinois); the full response includes every state.
+                  value:
+                    - ["B02015_001E","B02015_001EA","B02015_001M","B02015_001MA","B02015_002E","B02015_002EA","B02015_002M","B02015_002MA","B02015_003E","B02015_003EA","B02015_003M","B02015_003MA","B02015_004E","B02015_004EA","B02015_004M","B02015_004MA","B02015_005E","B02015_005EA","B02015_005M","B02015_005MA","B02015_006E","B02015_006EA","B02015_006M","B02015_006MA","B02015_007E","B02015_007EA","B02015_007M","B02015_007MA","B02015_008E","B02015_008EA","B02015_008M","B02015_008MA","B02015_009E","B02015_009EA","B02015_009M","B02015_009MA","B02015_010E","B02015_010EA","B02015_010M","B02015_010MA","B02015_011E","B02015_011EA","B02015_011M","B02015_011MA","B02015_012E","B02015_012EA","B02015_012M","B02015_012MA","B02015_013E","B02015_013EA","B02015_013M","B02015_013MA","B02015_014E","B02015_014EA","B02015_014M","B02015_014MA","B02015_015E","B02015_015EA","B02015_015M","B02015_015MA","B02015_016E","B02015_016EA","B02015_016M","B02015_016MA","B02015_017E","B02015_017EA","B02015_017M","B02015_017MA","B02015_018E","B02015_018EA","B02015_018M","B02015_018MA","B02015_019E","B02015_019EA","B02015_019M","B02015_019MA","B02015_020E","B02015_020EA","B02015_020M","B02015_020MA","B02015_021E","B02015_021EA","B02015_021M","B02015_021MA","B02015_022E","B02015_022EA","B02015_022M","B02015_022MA","B02015_023E","B02015_023EA","B02015_023M","B02015_023MA","B02015_024E","B02015_024EA","B02015_024M","B02015_024MA","B02015_025E","B02015_025EA","B02015_025M","B02015_025MA","GEO_ID","NAME","state"]
+                    - ["717992",null,"5911",null,"242823",null,"12230",null,"2062",null,"1211",null,"23",null,"41",null,"7001",null,"3663",null,"3627",null,"1798",null,"135795",null,"8745",null,"126628",null,"10428",null,"655",null,"511",null,"1867",null,"1105",null,"21568",null,"3365",null,"58037",null,"5955",null,"3572",null,"1770",null,"667",null,"409",null,"3579",null,"2581",null,"3567",null,"1759",null,"0",null,"195",null,"39777",null,"7043",null,"1209",null,"739",null,"5564",null,"1467",null,"11820",null,"3313",null,"29296",null,"5888",null,"314",null,"311",null,"5226",null,"2848",null,"13315",null,"2555",null,"0400000US17","Illinois","17"]
+        '204':
+          $ref: '#/components/responses/NoContent'
+        '302':
+          $ref: '#/components/responses/KeyRedirect'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /timeseries/intltrade/exports/enduse:
+    get:
+      operationId: getMonthlyExportsByEndUse
+      tags:
+        - International Trade
+      summary: Get monthly U.S. exports by end-use code
+      description: >-
+        Returns data from the time series dataset *International Trade: Monthly U.S. Exports by End-Use Code*, such as the total value of exports for each Customs district.
+
+        A time series dataset holds data for several points in time in one dataset, so this path has no year in the URL. Instead, you choose the time period with a predicate.
+
+        **Specifying the time period (required)**
+
+        You must include a time period, in one of two ways:
+
+        - `YEAR` and `MONTH`: a four-digit year and a two-digit month, for  example `YEAR=2016&MONTH=06`
+
+        - `time`: for example `time=2016-06`
+
+        Because either option works, none of these parameters are marked as required on its own. If you include neither, the API returns a 400 error: `missing required variable/predicate: time`.
+
+        The option you use changes the response columns: `YEAR` and `MONTH` return `YEAR` and `MONTH` columns, while `time` returns a single `time` column instead. Using both is allowed and returns all three columns.
+
+        **Default values ("Default Displayed")**
+
+        In the API Discovery Tool, the `DISTRICT` variable shows "Default Displayed" in the Required column. This means the variable covers several categories, and by default the API returns data for every district code. To limit the results to specific districts, add a `DISTRICT` predicate. If you're not sure what a variable's default is, include it in a request and look at the results.
+
+        **Geography**
+
+        This dataset has no geography predicates. Results cover all exports in the United States, so `for`, `in`, and `ucgid` don't apply.
+
+        For the full list of variables, see the [variables page](https://api.census.gov/data/timeseries/intltrade/exports/enduse/variables.html). For more queries, see the [examples page](https://api.census.gov/data/timeseries/intltrade/exports/enduse/examples.html).
+      # Note: OpenAPI 3.1 can't express "either time, or YEAR and MONTH, is # required" on query parameters, so none is marked required. The rule is explained in the description. Verified in testing (October 2026).
+      parameters:
+        - name: get
+          in: query
+          required: true
+          description: >-
+            The variables to return, separated by commas with no spaces, for example `DISTRICT,DIST_NAME,ALL_VAL_MO,ALL_VAL_YR`. See the dataset's variables page for the full list.
+          schema:
+            type: string
+          example: DISTRICT,DIST_NAME,ALL_VAL_MO,ALL_VAL_YR
+        - name: YEAR
+          in: query
+          required: false
+          description: >-
+            The year, as four digits, for example `2016`. Use with `MONTH`, or use `time` instead. `YEAR` and `MONTH` must be used together. `MONTH` alone returns a 400 error, and `YEAR` alone returns a 500 server error.
+          schema:
+            type: string
+            pattern: '^[0-9]{4}$'
+          example: "2016"
+        - name: MONTH
+          in: query
+          required: false
+          description: >-
+            The month, as two digits, for example `06` for June. Use with `YEAR`, or use `time` instead. `YEAR` and `MONTH` must be used together. `MONTH` alone returns a 400 error, and `YEAR` alone returns a 500 server error.
+          # Verified in testing (October 2026).
+          schema:
+            type: string
+            pattern: '^[0-9]{2}$'
+          example: "06"
+        - name: DISTRICT
+          in: query
+          required: false
+          description: >-
+            Limits results to one or more Customs districts, using the two-character district code, for example `01` for Portland, ME. By default, the API returns every district, plus a total row.
+
+            To request several districts, repeat the parameter (`DISTRICT=01&DISTRICT=04`). Use a wildcard for codes that start with the same digits (`DISTRICT=1*` returns districts 10 through
+            19). District codes are not continuous; a code with no district (for example `12`) returns no data.
+          schema:
+            type: string
+          example: "01"
+          # Verified on the variables page and in testing (October 2026).
+        - $ref: '#/components/parameters/time'
+      responses:
+        '200':
+          description: >-
+            Query results. The first row holds the column names, including the time predicate columns; each following row holds the values for one Customs district. The first data row is the total for all districts, with `-` as its DISTRICT value.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataResponse'
+              examples:
+                exportsByDistrictJune2016:
+                  summary: Total exports by Customs district, June 2016
+                  description: >-
+                    Response to
+                    `GET /timeseries/intltrade/exports/enduse?get=DISTRICT,DIST_NAME,ALL_VAL_MO,ALL_VAL_YR&YEAR=2016&MONTH=06`, captured from the live API in October 2026. Figures are revised over time, so they differ from the original user guide. The first row is the total for all districts, with `-` as its `DISTRICT` value. The full response includes every district.
+                  value:
+                    - ["DISTRICT","DIST_NAME","ALL_VAL_MO","ALL_VAL_YR","YEAR","MONTH"]
+                    - ["-","TOTAL FOR ALL DISTRICTS","125098472280","710375181044","2016","06"]
+                    - ["01","PORTLAND, ME","331806543","2115131981","2016","06"]
+                    - ["02","ST. ALBANS, VT","185303473","1146029068","2016","06"]
+                    - ["04","BOSTON, MA","727206031","3809798337","2016","06"]
+                    - ["05","PROVIDENCE, RI","16926100","81324062","2016","06"]
+                    - ["07","OGDENSBURG, NY","1453893826","8175510192","2016","06"]
+                    - ["09","BUFFALO, NY","4480533914","23856111530","2016","06"]
+                    - ["10","NEW YORK CITY, NY","11710790969","67631679235","2016","06"]
+                    - ["11","PHILADELPHIA, PA","1394262586","7917423322","2016","06"]
+                    - ["13","BALTIMORE, MD","1211018756","7350714163","2016","06"]
+              # Note: the source's step 4 shows the get list with a space after a comma ("DIST_NAME, ALL_VAL_MO"). Testing (October 2026) showed the space breaks the query: 400, "error: unknown variable ''". The example uses the version without the space (from step 5).
+        '204':
+          $ref: '#/components/responses/NoContent'
+        '302':
+          $ref: '#/components/responses/KeyRedirect'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+ 
+components:
+  parameters:
+ 
+    for:
+      name: for
+      in: query
+      description: >-
+        Restricts results to a geography, written as `level:code`. Use a wildcard (`*`) for all values at that level, or separate several codes with commas.
+ 
+        Examples:
+ 
+        - `state:01`: Alabama only
+        - `state:01,13`: Alabama and Georgia
+        - `state:*`: all states
+        - `county:001` (with `in=state:01`): Autauga County, Alabama
+        - `county (or part):073` (with `in=state:01 place:07000`): the part of Jefferson County, Alabama, within Birmingham city
+ 
+        Spaces in level names are sent as `%20` in the URL. The available geography levels depend on the dataset; see the dataset's Examples page in the API Discovery Tool.
+
+        Whether `for` is required depends on the dataset and year. Population Estimates, and ACS 1-Year from 2021 onward, return a 400 error (`missing 'for' argument`) without it, unless you use `ucgid`
+        instead. ACS 1-Year 2019 accepts the request but returns every geography at every level (nation, regions, states, down to school districts) in one large response, with no column showing each row's geography type. Always include `for` or `ucgid`.
+      # Verified in testing (October 2026) on PEP 2019 and ACS 1-Year 2019 and 2021-2024. Earlier ACS years not tested.
+      required: false
+      schema:
+        type: string
+      examples:
+        oneState:
+          summary: One state
+          value: state:01
+        allStates:
+          summary: All states
+          value: state:*
+        allCountiesInState:
+          summary: All counties (use with in=state:01)
+          value: county:*
+ 
+    in:
+      # Note: `name: in` is the query parameter's name. The `in: query` line below is the OpenAPI field that says where the parameter goes.
+      name: in
+      in: query
+      description: >-
+        Used with `for` to restrict results to areas inside a larger geography, written as `level:code`. Wildcards (`*`) are allowed, so `for=county:*&in=state:*` returns every county in every state.
+
+        To give more than one parent level, separate them with a space (`%20` in the URL), for example `in=state:17 county:031`, or repeat the parameter: `in=state:17&in=county:*`.
+
+        Parent levels depend on the dataset and the `for` level. Population Estimates supports only county within state. ACS supports many more, including places within states and areas within metropolitan statistical areas. Some level names include "(or part)", for areas that cross a parent's boundary. See each dataset's examples page for the combinations it supports.
+
+        Each `in` level adds a geography column to the response. Rows are not returned in any particular order.
+      # Verified on the examples pages and in testing (October 2026).
+      required: false
+      schema:
+        type: string
+      examples:
+        state:
+          summary: Within Alabama
+          value: state:01
+        stateAndPlace:
+          summary: Within Birmingham city, Alabama
+          value: state:01 place:07000
+        allCountiesAllStates:
+          summary: All counties in every state (use with for=county:*)
+          value: state:*
+ 
+    ucgid:
+      name: ucgid
+      in: query
+      description: >-
+        An alternative to `for` and `in` for choosing geographies, using fully qualified GEO IDs (Uniform Census Geography Identifiers). Use either `ucgid` or `for`/`in`, not both.
+
+        **One or more individual geographies:** list GEO IDs separated by commas. Unlike `for`, you can mix geography levels in one request, for example a state and one of its counties:
+        `ucgid=0400000US24,0500000US24017` (Maryland and Charles County, MD).
+
+        **Collections of geographies:** use `pseudo()` with a parent GEO ID, a `$`, and the 7-character code for the child geography type. For example, `ucgid=pseudo(0400000US24$0500000)` returns all counties in Maryland. Some collections are only available this way, such as all ZIP Code Tabulation Areas in a state.
+
+        **GEO ID format:** a 3-character summary level, a 2-character geographic variant, a 2-character geographic component, `US`, and the area's numeric codes. For example, `1600000US3651000` is New York city: summary level `160` (place), no variant (`00`), not a component (`00`), `US`, state `36`, place `51000`. To find GEO IDs, add the `GEO_ID` variable to a request.
+
+        Not every dataset supports `ucgid`. When it's available, it appears in the dataset's variables list.
+      required: false
+      schema:
+        type: string
+      examples:
+        twoStates:
+          summary: California and Oregon
+          value: 0400000US06,0400000US41
+        mixedLevels:
+          summary: Maryland and Charles County, MD
+          value: 0400000US24,0500000US24017
+        allCountiesInState:
+          summary: All counties in Maryland (collection)
+          value: pseudo(0400000US24$0500000)
+ 
+    time:
+      name: time
+      in: query
+      description: >-
+        Time series datasets only. Restricts results to a point or range in time. Use `+` between words in ranges. Wildcards are not allowed.
+ 
+        Examples:
+ 
+        - `2015`: the year 2015
+        - `2015-01`: January 2015
+        - `2015-Q1`: first quarter of 2015
+        - `from+1997+to+2012`: 1997 through 2012
+        - `from+2015-01`: January 2015 to the present
+        - `to+2015-01`: up to January 2015
+      # Note: some time series datasets use other time variables (such as YEAR and MONTH) as well as or instead of `time`. Each time series path describes its own options.
+      required: false
+      schema:
+        type: string
+      examples:
+        year:
+          summary: One year
+          value: "2015"
+        range:
+          summary: Range of years
+          value: from+1997+to+2012
+ 
+     # Note: variable predicates (for example DATE_=7, PAYANN=0:399999) can't be shared parameters, because their names differ by dataset. Each path defines its own (HISP, YEAR, MONTH, DISTRICT). The general rules are documented on the docs site.
+ 
+  schemas:
+ 
+    DataResponse:
+      description: >-
+        Query results as a two-dimensional JSON array. The first row holds the column names: the requested variables, followed by any predicate variables and geography columns. Each following row holds the values for one result. All values are strings, including numbers (for example `"4849377"`), or `null` where no data was entered. Convert numeric values before doing calculations.
+      # Verified in testing (October 2026) on ACS 1-Year (7,270 rows) and International Trade time series responses.
+      type: array
+      items:
+        type: array
+        items:
+          type:
+            - string
+            - "null"
+      example:
+        - [STNAME, POP, DATE_, state]
+        - [Alabama, "4849377", "7", "01"]
+        - [Alaska, "736732", "7", "02"]
+        - [Arizona, "6731484", "7", "04"]
+  
+  securitySchemes:
+   censusApiKey:
+     type: apiKey
+     in: query
+     name: key
+     description: >-
+        Your Census Data API key, sent as the `key` query parameter. A key is required for every request. Register for a free key on the Census Developers site: https://api.census.gov/data/key_signup.html
+      # Verified in testing (October 2026): a request without a key returns an HTML "Missing Key" page, not JSON. The PDF's "500 queries without a key" limit is out of date.
+
+  responses:
+    NoContent:
+      description: >-
+        No data matches the request, for example a geography code that doesn't exist (`for=state:99`). The response body is empty. Conflicting geography parameters (for example, for, in, and ucgid together) also return 204.
+    KeyRedirect:
+      description: >-
+        The API key is missing or invalid. The API redirects to an HTML page that explains the problem. If your client follows redirects automatically, you'll get a 200 response containing that HTML page instead of JSON data.
+      headers:
+        Location:
+          description: URL of the HTML page that explains the problem.
+          schema:
+            type: string
+    BadRequest:
+      description: >-
+        The API recognized a problem with the request, such as an unknown variable name. The body is a short plain-text message.
+      content:
+        text/plain:
+          schema:
+            type: string
+          examples:
+            unknownVariable:
+              value: "error: unknown variable 'POPP'"
+            missingFor:
+              value: "error: missing 'for' argument"
+    NotFound:
+      description: >-
+        The dataset doesn't exist (for example, a year with no data for this dataset), or the request is missing the required `get` parameter. The body is an HTML error page.
+      content:
+        text/html:
+          schema:
+            type: string
+    ServerError:
+      description: >-
+        The server failed while running the query. Seen when the time series path is called with `YEAR` but no `MONTH`. The message says the error was logged.
+      content:
+        text/plain:          # change to match what Postman shows
+          schema:
+            type: string
+          example: >-
+            There was an error while running your query. We've logged the error and we'll correct it ASAP. Sorry for the inconvenience.
+  # Note: error responses were tested on all three paths (October 2026): # 400 and 404 on Population Estimates, 400 and 204 on ACS 1-Year, 400 and 500 on the International Trade time series.
