@@ -25,7 +25,7 @@
   },
   "pages": [
     "purpose",
-    "what-is-the-census-data-api",
+    "what-is-census-data-api",
     "available-datasets",
     {
       "group": "Core Concepts",
@@ -36,10 +36,14 @@
         "attributes",
         "get-function",
         "predicate",
-        "response-format-json",
         "group-function"
       ]
-    }
+    },
+    "example-api-queries",
+    "ucgid-predicate",
+    "query-limits",
+    "api-key",
+    "resources-for-learning-more"
   ]
 },
   "logo": {
