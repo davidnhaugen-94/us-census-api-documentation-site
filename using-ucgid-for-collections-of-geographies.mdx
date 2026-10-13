@@ -1,0 +1,42 @@
+---
+title: "Using ucgid for Collections of Geographies (Pseudo Geos)"
+---
+
+The ucgid predicate also allows you to retrieve data for collections of geographies, such as All Counties within Maryland or All Census Tracts within Jessamine County, Kentucky. This functions similarly to using the wildcard functionality (*) when using the standard geography predicates (&for and &in) – except the ucgid predicate provides access to even more options to request data for collections of geographies. “All Census Tracts in the U.S.” or “All ZIP Code Tabulation Areas fully/partially within Maryland” are some examples of collections of geographies that are exclusively available by using ucgid.
+
+Use the ucgid predicate: &ucgid=pseudo and in parentheses, enter the joined parent/child GEO IDs. In the below example, the ucgid predicate provides results for All Counties within Maryland:
+
+`&ucgid=pseudo(0400000US24$0500000)`
+
+`https://api.census.gov/data/2022/acs/acs1/profile?get=NAME,DP05_0001E&ucgid=pseudo(0400000US24$0500000)`
+
+GEO IDs for collections of geographies (pseudo geos), consist of:
+
+- The fully qualified GEO ID of the parent geography. The parent geography is a single reference geography when considering whether other geographies intersect with it.
+- A dollar sign ($) to represent the joining of two geographies.
+- The 7-character ID representing the type of geographic area for the child geographies. Child geographies are the collection of geographic areas that intersect with the parent geography, meaning they are fully and/or partially contained within the parent geography.
+
+As an example, consider the ucgid predicate for All Counties within Maryland:
+
+`&ucgid=pseudo(0400000US24$0500000)`
+
+- 0400000US24 = Fully qualified GEO ID for Maryland (parent geography)
+- $ = Symbol that represents the joining of two geographies
+- 0500000 = All Counties (child geography)\*
+
+   > \*The first 3 characters always indicate the child geography’s summary level, in this case, 050 for counties. This is typically followed by four zeros, with a few exceptions noted in column B of the [List of Available Collections of Geographies](https://www2.census.gov/data/api-documentation/list-of-available-collections-of-geographies.xlsx).
+
+The [List of Available Collections of Geographies](https://www2.census.gov/data/api-documentation/list-of-available-collections-of-geographies.xlsx) also provides documentation of each possible geography collection that can be used in the API. Please be aware that not every collection of geography is available for every dataset. In most cases, collections of geographies are supported when a dataset provides data for the both the parent and child summary levels.
+
+**Table 2: Ucgid Examples for Collections of Geographies**
+
+| Geography Collection Name | GEO ID for Geography Collection  | Ucgid Predicate  |
+| ---------- | -------------------------------- | ---------------- |
+| All Counties within Arkansas | `0400000US05$0500000`<br />0400000US05 = Arkansas (parent geo)<br />$<br />0500000 = All counties (child geo)| `&ucgid=pseudo(0400000US05$0500000)` |
+| All Places within Louisiana | `0400000US22$1600000`<br />0400000US22 = Louisiana (parent geo)<br />$<br />1600000 = All places (child geo) | `&ucgid=pseudo(0400000US22$1600000)` |
+| All ZIP Code Tabulation Areas (ZCTAs) fully/partially within New Hampshire | `0400000US33$8600000`<br />0400000US33 = New Hampshire (parent geo)<br />$<br />8600000 = All ZCTAs (child geo) | `&ucgid=pseudo(0400000US33$8600000)` |
+| All Metropolitan and Micropolitan Statistical Areas fully/partially within Nebraska | `0400000US31$3100000`<br />0400000US31= Nebraska (parent geo)<br />$<br />3100000 = All metro/micro areas (child geo) | `&ucgid=pseudo(0400000US31$3100000)` |
+| All Census Tracts within Jessamine County, Kentucky | `0500000US21113$1400000`<br />0500000US21113 = Jessamine County (parent geo)<br />$<br />1400000 = All census tracts (child geo) | `&ucgid=pseudo(0500000US21113$1400000)` |
+| All Census Tracts fully/partially within Congressional District 1, Iowa | `5001800US1901$1400000`<br />5001800US1901 = Congressional District 1, IA (parent geo)<br />$<br />1400000 = All census tracts (child geo) | `&ucgid=pseudo(5001800US1901$1400000)` |
+| All Block Groups within Census Tract 19, Fairbanks North Star Borough, Alaska | `1400000US02090001900$1500000`<br />1400000US02090001900 = Census Tract 19, Fairbanks North Star Borough, AK (parent geo)<br />$<br />1500000 = All block groups (child geo) | `&ucgid=pseudo(1400000US02090001900$1500000)` |
+| All Blocks within Census Tract 9653.02, Somerset County, Maine | `1400000US23025965302$1000000`<br />1400000US23025965302 = Census Tract 9965.02,Somerset County, ME (parent geo)<br />$<br />1000000 = All blocks (child geo) | `&ucgid=pseudo(1400000US23025965302$1000000)` |

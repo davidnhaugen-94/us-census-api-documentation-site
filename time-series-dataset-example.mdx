@@ -1,0 +1,84 @@
+---
+title: "Time Series Dataset Example - International Trade Monthly Exports"
+---
+
+For some datasets available on the Census Data API, data are stored for multiple points of time in one dataset, rather than across several datasets for individual points of time. When this occurs, we refer to the dataset as a time series dataset. For more information on time series datasets, see the time series section for Predicate in this user guide. You can find the list of time series datasets on the Census Data API at: 
+
+`https://api.census.gov/data/timeseries.html`
+
+In this example, we will build a query for one of the time series datasets in the API, *International Trade: Monthly U.S. Exports by End-Use Code* for the total export value (monthly and year-to-date) for all Customs districts for June 2016:
+
+`https://api.census.gov/data/timeseries/intltrade/exports/enduse?get=DISTRICT,DIST_NAME,ALL_VAL_MO,ALL_VAL_YR&YEAR=2016&MONTH=06`
+
+Assemble components of this query by following these steps:
+
+1. Start your query with the host name:
+
+   `https://api.census.gov/data`
+
+2. Add timeseries to the query:
+
+   `https://api.census.gov/data/timeseries`
+
+3. Add the dataset name acronym:
+
+   `https://api.census.gov/data/timeseries/intltrade/exports/enduse`
+
+   This is the base URL for this dataset. You can find dataset names by browsing the discovery tool:
+   
+   `https://api.census.gov/data.html`
+
+4. Add ?get= to the query:
+
+   `https://api.census.gov/data/timeseries/intltrade/exports/enduse?get=`
+
+   Add your variables:
+   
+   `https://api.census.gov/data/timeseries/intltrade/exports/enduse?get=DISTRICT,DIST_NAME, ALL_VAL_MO,ALL_VAL_YR`
+
+   In this dataset, ALL_VAL_MO provides the total exports of goods in the month, and variable ALL_VAL_YR provides total exports of goods year to date. The variable DISTRICT provides the two-digit district code, and DIST_NAME provides the district name. You can find the full list of available variables in the variables page for the dataset:
+
+   `https://api.census.gov/data/timeseries/intltrade/exports/enduse/variables.html`
+
+   In the discovery tool, you will notice that the variable for DISTRICT has text that says “Default Displayed” in the required column. This indicates that the variable provides data for several categories. The default for this variable is to provide data for each available district code. If you are not sure what the default is for a variable, include it in an API call and view the results. This will help you decide if you want to keep the variable in your query as is or if you may want to limit the results by adding a variable predicate in your query. In this case, we will continue with the default to get data for all districts.
+
+5. Add the time period:
+
+   `https://api.census.gov/data/timeseries/intltrade/exports/enduse?get=DISTRICT,DIST_NAME,ALL_VAL_MO,ALL_VAL_YR&YEAR=2016&MONTH=06`
+
+   Adding the time period using the related predicate is required for this dataset. This will be in the format of a four digit year and two digit month.
+   
+   > **Tip**: You can also specify this required time range as `&time=2016-06`. See Section 5.1.5 Predicate in this user guide for building predicates for time series.
+
+6. Use the default geography:
+
+   `https://api.census.gov/data/timeseries/intltrade/exports/enduse?get=DISTRICT,DIST_NAME,ALL_VAL_MO,ALL_VAL_YR&YEAR=2016&MONTH=06`
+
+   This dataset does not have any geography predicates we can add to further refine our results, as shown on the examples page.
+
+   `https://api.census.gov/data/timeseries/intltrade/exports/enduse/examples.html`
+   
+   By default, we will get data for all exports in the United States.
+
+The query configures the first rows of output of the query as follows:
+
+```json
+["DISTRICT","DIST_NAME","ALL_VAL_MO","ALL_VAL_YR","YEAR","MONTH"],
+["","TOTAL FOR ALL DISTRICTS","125024387876","711355944093","2016","06"],
+["01","PORTLAND, ME","331269702","2082731222","2016","06"],
+["02","ST. ALBANS, VT","184995129","1144444553","2016","06"],
+["04","BOSTON, MA","727085911","3808920861","2016","06"],
+["05","PROVIDENCE, RI","16926100","77856036","2016","06"],
+["07","OGDENSBURG, NY","1440920883","8137120100","2016","06"],
+["09","BUFFALO, NY","4343113148","23189188640","2016","06"],
+["10","NEW YORK CITY, NY","11703487744","67797106022","2016","06"],
+["11","PHILADELPHIA, PA","1401964078","7895311695","2016","06"],
+["13","BALTIMORE, MD","1218070977","7354545603","2016","06"],
+["14","NORFOLK, VA","1999192268","13011038202","2016","06"],
+["15","WILMINGTON, NC","452856985","2828815661","2016","06"],
+["16","CHARLESTON, SC","2950121172","16716095334","2016","06"],
+["17","SAVANNAH, GA","4150832886","22986303931","2016","06"],
+…..
+```
+
+Now you are ready to write your API queries for a dataset. You can open and save your search to a text-editing program as a JSON file. You can save your search directly in Chrome and Firefox, but in Internet Explorer and Safari, you need to save your search to a text file program. You can only search for variables that the variable table specifically lists with the API. When using Chrome and Firefox, you can save your results as a .csv file. Instructions for this are provided in the short videos and PDF walkthroughs on the [How-To Materials for Using the Census API](https://www.census.gov/data/what-is-data-census-gov/guidance-for-data-users/how-to-materials-for-using-the-cenus-api.html) page.

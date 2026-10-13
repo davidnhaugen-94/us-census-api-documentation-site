@@ -1,0 +1,81 @@
+---
+title: "American Community Survey (ACS) Example"
+---
+
+The ACS has many datasets in the Census Data API with a large number of variables and special naming conventions. In our example, we will focus on the American Community Survey 1-Year Data.
+
+***E and M***
+
+At the end of a variable’s name in ACS datasets, E and M are characters for estimates and margins of error. E indicates the estimated value, based on the sample surveyed, while M at the end of a variable number indicates the margin of error. The smaller the sample size the greater
+the margin of error.
+
+***PE and PM***
+
+At the end of a variable’s name in some ACS datasets, PE stands for percentage estimate, and PM stands for percentage margin of error.
+
+More details are available on the [ACS Variable Types page](https://www.census.gov/data/developers/data-sets/acs-1year/notes-on-acs-api-variable-types.html).
+
+In our example, we will build an API call that provides data for the total number of Hmong people living in each U.S. state as determined by the 2019 American Community Survey 1-Year data. Format the search query URL as follows:
+
+`https://api.census.gov/data/2019/acs/acs1?get=NAME,B02015_009E,B02015_009M&for=state:*`
+
+Assemble components of this query by following these steps:
+
+1. Start your query with the host name:
+
+   `https://api.census.gov/data`
+
+2. Add the data year to the query:
+
+   `https://api.census.gov/data/2019`
+
+3. Add the dataset name acronym:
+
+   `https://api.census.gov/data/2019/acs/acs1`
+
+   This is the base URL for this dataset. You can find dataset names by browsing the discovery tool:
+   
+   `https://api.census.gov/data.html`
+
+4. Add ?get= to the query:
+
+   `https://api.census.gov/data/2019/acs/acs1?get=`
+
+5. Add your variables:
+
+   `https://api.census.gov/data/2019/acs/acs1?get=NAME,B02015_009E,B02015_009M`
+
+   In this dataset, the variable called NAME provides the geographic name you are using to limit your search. The variable B02015_009E provides the total number of Hmong people, and the variable B02015_009M is an attribute that will provide the corresponding margin of error. Use a comma to separate each variable; e.g.,?get=NAME,B02015_009E,B02015_009M. You can find the full list of available variables in the variables page for the dataset:
+   
+   `https://api.census.gov/data/2019/acs/acs1/variables.html`
+
+6. Add your geographies:
+
+   `https://api.census.gov/data/2019/acs/acs1?get=NAME,B02015_009E,B02015_009M&for=state:*`
+
+   Use a predicate clause starting with an ampersand (&) to separate it from your get clause and then a for followed by an in clause, if needed; e.g., &for=state:. Because we are looking for information in all the states, add a wildcard (*) to indicate all values; e.g., state:*. You can find the full list of available geographies in the examples page for the dataset:
+   
+   `https://api.census.gov/data/2019/acs/acs1/examples.html`
+
+The query configures the first rows of output as follows:
+
+```json
+[["NAME","B02015_009E","B02015_009M","state"],
+["Illinois","655","511","17"],
+["Georgia","3162","1336","13"],
+["Idaho",null,null,"16"],
+["Hawaii","56","92","15"],
+["Indiana","1344","1198","18"],
+["Iowa","685","705","19"],
+["Kansas","2189","1177","20"],
+["Kentucky","530","503","21"],
+["Louisiana","0","224","22"],
+["Maine",null,null,"23"],
+…..
+```
+
+“Null” occurs as a result when there is no data entered for that answer. You can find other examples of searches in this dataset by clicking the link in the “Examples” column on the API datasets page, which will take you to the examples page here:
+
+`https://api.census.gov/data/2019/acs/acs1/examples.html`
+
+> **Tip:** If your query returns an error message with no data, check your spelling, capitalization, and spacing. Correct it, and run it again.

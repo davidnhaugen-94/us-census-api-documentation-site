@@ -1,0 +1,82 @@
+---
+title: "Population Estimates Example"
+---
+
+Let’s begin with a query for the Hispanic population by state in the dataset, *Population Estimates: Estimates by Age Group, Sex, Race, and Hispanic Origin*. You will find this dataset listed on the Census Data API [Datasets page](https://api.census.gov/data.html) of the Discovery Tool:
+
+Format queries as a URL, as follows (use Chrome or Firefox):
+
+`https://api.census.gov/data/2019/pep/charagegroups?get=NAME,POP&HISP=2&for=state:*`
+
+Assemble components of this query by following these steps:
+1. Start your query with the host name:
+
+   `https://api.census.gov/data`
+
+2. Add the data year to the URL:
+
+   `https://api.census.gov/data/2019`
+
+   This is the year that the data were estimated.
+
+3. Add the dataset name acronym:
+
+   `https://api.census.gov/data/2019/pep/charagegroups`
+
+   This is the base URL for this dataset. You can find dataset names by browsing the
+discovery tool: `https://api.census.gov/data.html`
+
+4. Add ?get= to the query
+
+   `https://api.census.gov/data/2019/pep/charagegroups?get=`
+
+5. Add your variables:
+
+   `https://api.census.gov/data/2019/pep/charagegroups?get=NAME,POP`
+
+   In this dataset, NAME will provide the geography name and POP will provide the total population. Use a comma to separate each variable; e.g., NAME,POP. You can find the full list of available variables in the variables page for the dataset:
+
+   `https://api.census.gov/data/2019/pep/charagegroups/variables.html`
+
+6. Add variable predicates (if applicable):
+
+   `https://api.census.gov/data/2019/pep/charagegroups?get=NAME,POP&HISP=2`
+
+   In this dataset, the variable HISP provides data for three categories:
+   - 2 = Hispanic
+   - 1 = Non Hispanic
+   - 0 = Total Population
+   
+   You can find this by clicking the link for the [HISP variable](https://api.census.gov/data/2019/pep/charagegroups/variables/HISP.json) in the discovery tool, or by visiting the [documentation page for categorical variables in the Population Estimates datasets](https://www.census.gov/data/developers/data-sets/popest-popproj/popest/popest-vars.Vintage_2019.html).
+
+7. Add your geographies:
+
+   `https://api.census.gov/data/2019/pep/charagegroups?get=NAME,POP&HISP=2&for=state:*`
+
+   Use a predicate clause starting with an ampersand (&) to separate it from your get clause and then a for followed by an in clause, if needed; e.g., &for=state:. Because we are looking for information in all the states, add a wildcard (*) to indicate all values; e.g., state:*. You can find the full list of available geographies in the examples page for the dataset:
+   
+   `https://api.census.gov/data/2019/pep/charagegroups/examples.html`
+
+   As you can see, you can only search on the state, county, or national level for this dataset. Other datasets provide results for more types of geographic areas. Sometimes datasets change the number of geographies they publish from year to year.
+
+You can copy your query results into a spreadsheet to clean it up and analyze it, or you can save it as a file and consume it as JSON. The response for all queries is formatted as a two dimensional JSON array where the first row provides column names and the subsequent rows provide data values. The first rows of output of the query are configured as follows:
+
+```json
+[["NAME","POP","HISP","state"],
+["Mississippi","100110","2","28"],
+["Missouri","268708","2","29"],
+["Montana","43289","2","30"],
+["Nebraska","219645","2","31"],
+["Nevada","900600","2","32"],
+["New Hampshire","54589","2","33"],
+["New Jersey","1856844","2","34"],
+["New Mexico","1032942","2","35"],
+["New York","3751058","2","36"],
+…..
+```
+
+You can find examples of other queries for this dataset by clicking the link in the Examples column on the API datasets page, which takes you to this Example page:
+
+`https://api.census.gov/data/2019/pep/charagegroups/examples.html`
+
+> **Tip**: As you begin to build queries, start with examples and expand upon them. This is a great way to learn how to use the Census Data API.
