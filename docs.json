@@ -9,7 +9,24 @@
   },
   "favicon": "/favicon.svg",
   "navigation": {
+  "global": {
+    "anchors": [
+      {
+        "anchor": "Census Data API",
+        "href": "https://www.census.gov/data/developers.html",
+        "icon": "landmark"
+      },
+      {
+        "anchor": "GitHub Repo",
+        "href": "https://github.com/YOUR-USERNAME/YOUR-REPO",
+        "icon": "github"
+      }
+    ]
+  },
   "pages": [
+    "purpose",
+    "what-is-the-census-data-api",
+    "available-datasets",
     {
       "group": "Core Concepts",
       "root": "core-concepts",
