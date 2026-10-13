@@ -69,6 +69,10 @@
         "resources-for-learning-more",
         "contact-us"
       ]
+    },
+    {
+      "group": "API Reference",
+      "openapi": "openapi.yaml"
     }
   ]
 },
