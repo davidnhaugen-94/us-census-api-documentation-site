@@ -42,23 +42,23 @@
     {
       "group": "Example API Queries",
       "pages": [
-        "example-api-queries",
         "population-estimates-example",
         "american-community-survey-(acs)-example",
         "group-call-example",
         "time-series-dataset-example"
-      ]
+      ],
+      "root": "example-api-queries"
     },
     {
       "group": "Ucgid Predicate: Alternative Option to Specify Geographies",
       "pages": [
-        "ucgid-predicate",
         "using-ucgid-for-collections-of-geographies",
         "geographic-variants",
         "geographic-components",
         "finding-fully-qualified-geo-ids",
         "using-ucgid-for-individual-geographies"
-      ]
+      ],
+      "root": "ucgid-predicate"
     },
     "query-limits",
     "api-key",
