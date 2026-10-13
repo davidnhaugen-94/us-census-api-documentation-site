@@ -1,0 +1,297 @@
+---
+title: "Example API Queries"
+---
+
+Following are some examples that give a detailed breakdown of the components of the URL needed for building a query in a dataset. These examples will introduce you to some of the most popular datasets in the API: Population Estimates, the American Community Survey, and International Trade. Many aspects of these examples apply across datasets, such as the use of categorical variables or group calls.
+
+### Population Estimates Example
+
+Let’s begin with a query for the Hispanic population by state in the dataset, *Population Estimates: Estimates by Age Group, Sex, Race, and Hispanic Origin*. You will find this dataset listed on the Census Data API [Datasets page](https://api.census.gov/data.html) of the Discovery Tool:
+
+Format queries as a URL, as follows (use Chrome or Firefox):
+
+`https://api.census.gov/data/2019/pep/charagegroups?get=NAME,POP&HISP=2&for=state:*`
+
+Assemble components of this query by following these steps:
+1. Start your query with the host name:
+
+   `https://api.census.gov/data`
+
+2. Add the data year to the URL:
+
+   `https://api.census.gov/data/2019`
+
+   This is the year that the data were estimated.
+
+3. Add the dataset name acronym:
+
+   `https://api.census.gov/data/2019/pep/charagegroups`
+
+   This is the base URL for this dataset. You can find dataset names by browsing the
+discovery tool: `https://api.census.gov/data.html`
+
+4. Add ?get= to the query
+
+   `https://api.census.gov/data/2019/pep/charagegroups?get=`
+
+5. Add your variables:
+
+   `https://api.census.gov/data/2019/pep/charagegroups?get=NAME,POP`
+
+   In this dataset, NAME will provide the geography name and POP will provide the total population. Use a comma to separate each variable; e.g., NAME,POP. You can find the full list of available variables in the variables page for the dataset:
+
+   `https://api.census.gov/data/2019/pep/charagegroups/variables.html`
+
+6. Add variable predicates (if applicable):
+
+   `https://api.census.gov/data/2019/pep/charagegroups?get=NAME,POP&HISP=2`
+
+   In this dataset, the variable HISP provides data for three categories:
+   - 2 = Hispanic
+   - 1 = Non Hispanic
+   - 0 = Total Population
+   
+   You can find this by clicking the link for the [HISP variable](https://api.census.gov/data/2019/pep/charagegroups/variables/HISP.json) in the discovery tool, or by visiting the [documentation page for categorical variables in the Population Estimates datasets](https://www.census.gov/data/developers/data-sets/popest-popproj/popest/popest-vars.Vintage_2019.html).
+
+7. Add your geographies:
+
+   `https://api.census.gov/data/2019/pep/charagegroups?get=NAME,POP&HISP=2&for=state:*`
+
+   Use a predicate clause starting with an ampersand (&) to separate it from your get clause and then a for followed by an in clause, if needed; e.g., &for=state:. Because we are looking for information in all the states, add a wildcard (*) to indicate all values; e.g., state:*. You can find the full list of available geographies in the examples page for the dataset:
+   
+   `https://api.census.gov/data/2019/pep/charagegroups/examples.html`
+
+   As you can see, you can only search on the state, county, or national level for this dataset. Other datasets provide results for more types of geographic areas. Sometimes datasets change the number of geographies they publish from year to year.
+
+You can copy your query results into a spreadsheet to clean it up and analyze it, or you can save it as a file and consume it as JSON. The response for all queries is formatted as a two dimensional JSON array where the first row provides column names and the subsequent rows provide data values. The first rows of output of the query are configured as follows:
+
+```json
+[["NAME","POP","HISP","state"],
+["Mississippi","100110","2","28"],
+["Missouri","268708","2","29"],
+["Montana","43289","2","30"],
+["Nebraska","219645","2","31"],
+["Nevada","900600","2","32"],
+["New Hampshire","54589","2","33"],
+["New Jersey","1856844","2","34"],
+["New Mexico","1032942","2","35"],
+["New York","3751058","2","36"],
+…..
+```
+
+You can find examples of other queries for this dataset by clicking the link in the Examples column on the API datasets page, which takes you to this Example page:
+
+`https://api.census.gov/data/2019/pep/charagegroups/examples.html`
+
+> **Tip**: As you begin to build queries, start with examples and expand upon them. This is a great way to learn how to use the Census Data API.
+
+### American Community Survey (ACS) Example
+
+The ACS has many datasets in the Census Data API with a large number of variables and special naming conventions. In our example, we will focus on the American Community Survey 1-Year Data.
+
+***E and M***
+
+At the end of a variable’s name in ACS datasets, E and M are characters for estimates and margins of error. E indicates the estimated value, based on the sample surveyed, while M at the end of a variable number indicates the margin of error. The smaller the sample size the greater
+the margin of error.
+
+***PE and PM***
+
+At the end of a variable’s name in some ACS datasets, PE stands for percentage estimate, and PM stands for percentage margin of error.
+
+More details are available on the [ACS Variable Types page](https://www.census.gov/data/developers/data-sets/acs-1year/notes-on-acs-api-variable-types.html).
+
+In our example, we will build an API call that provides data for the total number of Hmong people living in each U.S. state as determined by the 2019 American Community Survey 1-Year data. Format the search query URL as follows:
+
+`https://api.census.gov/data/2019/acs/acs1?get=NAME,B02015_009E,B02015_009M&for=state:*`
+
+Assemble components of this query by following these steps:
+
+1. Start your query with the host name:
+
+   `https://api.census.gov/data`
+
+2. Add the data year to the query:
+
+   `https://api.census.gov/data/2019`
+
+3. Add the dataset name acronym:
+
+   `https://api.census.gov/data/2019/acs/acs1`
+
+   This is the base URL for this dataset. You can find dataset names by browsing the discovery tool:
+   
+   `https://api.census.gov/data.html`
+
+4. Add ?get= to the query:
+
+   `https://api.census.gov/data/2019/acs/acs1?get=`
+
+5. Add your variables:
+
+   `https://api.census.gov/data/2019/acs/acs1?get=NAME,B02015_009E,B02015_009M`
+
+   In this dataset, the variable called NAME provides the geographic name you are using to limit your search. The variable B02015_009E provides the total number of Hmong people, and the variable B02015_009M is an attribute that will provide the corresponding margin of error. Use a comma to separate each variable; e.g.,?get=NAME,B02015_009E,B02015_009M. You can find the full list of available variables in the variables page for the dataset:
+   
+   `https://api.census.gov/data/2019/acs/acs1/variables.html`
+
+6. Add your geographies:
+
+   `https://api.census.gov/data/2019/acs/acs1?get=NAME,B02015_009E,B02015_009M&for=state:*`
+
+   Use a predicate clause starting with an ampersand (&) to separate it from your get clause and then a for followed by an in clause, if needed; e.g., &for=state:. Because we are looking for information in all the states, add a wildcard (*) to indicate all values; e.g., state:*. You can find the full list of available geographies in the examples page for the dataset:
+   
+   `https://api.census.gov/data/2019/acs/acs1/examples.html`
+
+The query configures the first rows of output as follows:
+
+```json
+[["NAME","B02015_009E","B02015_009M","state"],
+["Illinois","655","511","17"],
+["Georgia","3162","1336","13"],
+["Idaho",null,null,"16"],
+["Hawaii","56","92","15"],
+["Indiana","1344","1198","18"],
+["Iowa","685","705","19"],
+["Kansas","2189","1177","20"],
+["Kentucky","530","503","21"],
+["Louisiana","0","224","22"],
+["Maine",null,null,"23"],
+…..
+```
+
+“Null” occurs as a result when there is no data entered for that answer. You can find other examples of searches in this dataset by clicking the link in the “Examples” column on the API datasets page, which will take you to the examples page here:
+
+`https://api.census.gov/data/2019/acs/acs1/examples.html`
+
+> **Tip:** If your query returns an error message with no data, check your spelling, capitalization, and spacing. Correct it, and run it again.
+
+### Group Call Example – Get Results for All Data Variables in a Table
+
+If you want data for all variables in a table, use the group functionality. This will give you results for all variables in one easy command, even if the table contains more than 50 variables. For example, this API query provides results for all variables in table B02015 in each state from the 2019 American Community Survey 1-Year Estimates
+
+`https://api.census.gov/data/2019/acs/acs1?get=group(B02015)&for=state:*`
+
+Assemble components of this query by following these steps:
+1. Start your query with the host name:
+
+   `https://api.census.gov/data`
+
+2. Add the data year to the query:
+
+   `https://api.census.gov/data/2019`
+
+3. Add the dataset name acronym:
+
+   `https://api.census.gov/data/2019/acs/acs1`
+
+   This is the base URL for this dataset. You can find dataset names by browsing the discovery tool:
+   
+   `https://api.census.gov/data.html`
+
+4. Add ?get= to the query:
+
+   `https://api.census.gov/data/2019/acs/acs1?get=`
+
+5. Add group and your desired table ID in parenthesis.
+
+   `https://api.census.gov/data/2019/acs/acs1?get=group(B02015)`
+
+6. Add your geographies:
+
+   `https://api.census.gov/data/2019/acs/acs1?get=group(B02015)&for=state:*`
+
+   Use a predicate clause starting with an ampersand (&) to separate it from your get clause and then a for followed by an in clause, if needed; e.g., &for=state:. Because we are looking for information in all the states, add a wildcard (*) to indicate all values; e.g., state:*. You can find the full list of available geographies in the examples page for the dataset:
+   
+   `https://api.census.gov/data/2019/acs/acs1/examples.html`
+
+The query provides the first rows of output as follows:
+```json
+[["B02015_001E","B02015_001EA","B02015_001M","B02015_001MA","B02015_002E","B02015_002EA","B02015_002M","B02015_002MA","B02015_003E","B02015_003EA","B02015_003M","B02015_003MA","B02015_004E","B02015_004EA","B02015_004M","B02015_004MA","B02015_005E","B02015_005EA","B02015_005M","B02015_005MA","B02015_006E","B02015_006EA","B02015_006M","B02015_006MA","B02015_007E","B02015_007EA","B02015_007M","B02015_007MA","B02015_008E","B02015_008EA","B02015_008M","B02015_008MA","B02015_009E","B02015_009EA","B02015_009M","B02015_009MA","B02015_010E","B02015_010EA","B02015_010M","B02015_010MA","B02015_011E","B02015_011EA","B02015_011M","B02015_011MA","B02015_012E","B02015_012EA","B02015_012M","B02015_012MA","B02015_013E","B02015_013EA","B02015_013M","B02015_013MA","B02015_014E","B02015_014EA","B02015_014M","B02015_014MA","B02015_015E","B02015_015EA","B02015_015M","B02015_015MA","B02015_016E","B02015_016EA","B02015_016M","B02015_016MA","B02015_017E","B02015_017EA","B02015_017M","B02015_017MA","B02015_018E","B02015_018EA","B02015_018M","B02015_018MA","B02015_019E","B02015_019EA","B02015_019M","B02015_019MA","B02015_020E","B02015_020EA","B02015_020M","B02015_020MA","B02015_021E","B02015_021EA","B02015_021M","B02015_021MA","B02015_022E","B02015_022EA","B02015_022M","B02015_022MA","B02015_023E","B02015_023EA","B02015_023M","B02015_023MA","B02015_024E","B02015_024EA","B02015_024M","B02015_024MA","B02015_025E","B02015_025EA","B02015_025M","B02015_025MA","GEO_ID","NAME","state"],
+["717992",null,"5911",null,"242823",null,"12230",null,"2062",null,"1211",null,"23",null,"41",null,"7001",null,"3663",null,"3627",null,"1798",null,"135795",null,"8745",null,"126628",null,"10428",null,"655",null,"511",null,"1867",null,"1105",null,"21568",null,"3365",null,"58037",null,"5955",null,"3572",null,"1770",null,"667",null,"409",null,"3579",null,"2581",null,"3567",null,"1759",null,"0",null,"195",null,"39777",null,"7043",null,"1209",null,"739",null,"5564",null,"1467",null,"11820",null,"3313",null,"29296",null,"5888",null,"314",null,"311",null,"5226",null,"2848",null,"13315",null,"2555",null,"0400000US17","Illinois","17"],
+…..
+```
+
+In order to get the data in a viewable format, you can save the results as a .csv file by following the steps in the short videos and PDFs at the [How-To Materials for Using the Census API](https://www.census.gov/data/what-is-data-census-gov/guidance-for-data-users/how-to-materials-for-using-the-census-api.html) page.
+
+### Time Series Dataset Example - International Trade Monthly Exports
+
+For some datasets available on the Census Data API, data are stored for multiple points of time in one dataset, rather than across several datasets for individual points of time. When this occurs, we refer to the dataset as a time series dataset. For more information on time series datasets, see the time series section for Predicate in this user guide. You can find the list of time series datasets on the Census Data API at: 
+
+`https://api.census.gov/data/timeseries.html`
+
+In this example, we will build a query for one of the time series datasets in the API, *International Trade: Monthly U.S. Exports by End-Use Code* for the total export value (monthly and year-to-date) for all Customs districts for June 2016:
+
+`https://api.census.gov/data/timeseries/intltrade/exports/enduse?get=DISTRICT,DIST_NAME,ALL_VAL_MO,ALL_VAL_YR&YEAR=2016&MONTH=06`
+
+Assemble components of this query by following these steps:
+
+1. Start your query with the host name:
+
+   `https://api.census.gov/data`
+
+2. Add timeseries to the query:
+
+   `https://api.census.gov/data/timeseries`
+
+3. Add the dataset name acronym:
+
+   `https://api.census.gov/data/timeseries/intltrade/exports/enduse`
+
+   This is the base URL for this dataset. You can find dataset names by browsing the discovery tool:
+   
+   `https://api.census.gov/data.html`
+
+4. Add ?get= to the query:
+
+   `https://api.census.gov/data/timeseries/intltrade/exports/enduse?get=`
+
+   Add your variables:
+   
+   `https://api.census.gov/data/timeseries/intltrade/exports/enduse?get=DISTRICT,DIST_NAME, ALL_VAL_MO,ALL_VAL_YR`
+
+   In this dataset, ALL_VAL_MO provides the total exports of goods in the month, and variable ALL_VAL_YR provides total exports of goods year to date. The variable DISTRICT provides the two-digit district code, and DIST_NAME provides the district name. You can find the full list of available variables in the variables page for the dataset:
+
+   `https://api.census.gov/data/timeseries/intltrade/exports/enduse/variables.html`
+
+   In the discovery tool, you will notice that the variable for DISTRICT has text that says “Default Displayed” in the required column. This indicates that the variable provides data for several categories. The default for this variable is to provide data for each available district code. If you are not sure what the default is for a variable, include it in an API call and view the results. This will help you decide if you want to keep the variable in your query as is or if you may want to limit the results by adding a variable predicate in your query. In this case, we will continue with the default to get data for all districts.
+
+5. Add the time period:
+
+   `https://api.census.gov/data/timeseries/intltrade/exports/enduse?get=DISTRICT,DIST_NAME,ALL_VAL_MO,ALL_VAL_YR&YEAR=2016&MONTH=06`
+
+   Adding the time period using the related predicate is required for this dataset. This will be in the format of a four digit year and two digit month.
+   
+   > **Tip**: You can also specify this required time range as `&time=2016-06`. See Section 5.1.5 Predicate in this user guide for building predicates for time series.
+
+6. Use the default geography:
+
+   `https://api.census.gov/data/timeseries/intltrade/exports/enduse?get=DISTRICT,DIST_NAME,ALL_VAL_MO,ALL_VAL_YR&YEAR=2016&MONTH=06`
+
+   This dataset does not have any geography predicates we can add to further refine our results, as shown on the examples page.
+
+   `https://api.census.gov/data/timeseries/intltrade/exports/enduse/examples.html`
+   
+   By default, we will get data for all exports in the United States.
+
+The query configures the first rows of output of the query as follows:
+
+```json
+["DISTRICT","DIST_NAME","ALL_VAL_MO","ALL_VAL_YR","YEAR","MONTH"],
+["","TOTAL FOR ALL DISTRICTS","125024387876","711355944093","2016","06"],
+["01","PORTLAND, ME","331269702","2082731222","2016","06"],
+["02","ST. ALBANS, VT","184995129","1144444553","2016","06"],
+["04","BOSTON, MA","727085911","3808920861","2016","06"],
+["05","PROVIDENCE, RI","16926100","77856036","2016","06"],
+["07","OGDENSBURG, NY","1440920883","8137120100","2016","06"],
+["09","BUFFALO, NY","4343113148","23189188640","2016","06"],
+["10","NEW YORK CITY, NY","11703487744","67797106022","2016","06"],
+["11","PHILADELPHIA, PA","1401964078","7895311695","2016","06"],
+["13","BALTIMORE, MD","1218070977","7354545603","2016","06"],
+["14","NORFOLK, VA","1999192268","13011038202","2016","06"],
+["15","WILMINGTON, NC","452856985","2828815661","2016","06"],
+["16","CHARLESTON, SC","2950121172","16716095334","2016","06"],
+["17","SAVANNAH, GA","4150832886","22986303931","2016","06"],
+…..
+```
+
+Now you are ready to write your API queries for a dataset. You can open and save your search to a text-editing program as a JSON file. You can save your search directly in Chrome and Firefox, but in Internet Explorer and Safari, you need to save your search to a text file program. You can only search for variables that the variable table specifically lists with the API. When using Chrome and Firefox, you can save your results as a .csv file. Instructions for this are provided in the short videos and PDF walkthroughs on the [How-To Materials for Using the Census API](https://www.census.gov/data/what-is-data-census-gov/guidance-for-data-users/how-to-materials-for-using-the-cenus-api.html) page.

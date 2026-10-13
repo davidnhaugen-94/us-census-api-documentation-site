@@ -1,0 +1,9 @@
+---
+title: "Query Limits"
+---
+
+You can include up to 50 variables in a single API query and can make up to 500 queries per IP address per day. More than 500 queries per IP address per day requires that you register for a Census key. That key will be part of your data request URL string.
+
+Please keep in mind that all queries from a business or organization having multiple employees might employ a proxy service or firewall. This will make all of the users of that business or organization appear to have the same IP address. If multiple employees were making queries, the 500-query limit would be for the proxy server/firewall, not the individual user.
+
+You also need an API key if you create a mobile or web application that makes more than 500 queries to the API in a day. This cumulative limit is reached by adding up all instances when the application queries the Census Data API, even if multiple users access your application through different IP addresses.
