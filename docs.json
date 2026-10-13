@@ -24,47 +24,52 @@
     ]
   },
   "pages": [
-    "purpose",
-    "what-is-census-data-api",
-    "available-datasets",
     {
-      "group": "Core Concepts",
-      "root": "core-concepts",
+      "group": "User Guide",
       "pages": [
-        "variables",
-        "required-variables",
-        "attributes",
-        "get-function",
-        "predicate",
-        "response-format–json",
-        "group-function"
+        "purpose",
+        "what-is-census-data-api",
+        "available-datasets",
+        {
+          "group": "Core Concepts",
+          "root": "core-concepts",
+          "pages": [
+            "variables",
+            "required-variables",
+            "attributes",
+            "get-function",
+            "predicate",
+            "response-format-json",
+            "group-function"
+          ]
+        },
+        {
+          "group": "Example API Queries",
+          "root": "example-api-queries",
+          "pages": [
+            "population-estimates-example",
+            "american-community-survey-acs-example",
+            "group-call-example",
+            "time-series-dataset-example"
+          ]
+        },
+        {
+          "group": "Ucgid Predicate: Alternative Option to Specify Geographies",
+          "root": "ucgid-predicate",
+          "pages": [
+            "using-ucgid-for-collections-of-geographies",
+            "geographic-variants",
+            "geographic-components",
+            "finding-fully-qualified-geo-ids",
+            "using-ucgid-for-individual-geographies"
+          ]
+        },
+        "query-limits",
+        "api-key",
+        "resources-for-learning-more",
+        "contact-us"
       ]
-    },
-    {
-      "group": "Example API Queries",
-      "pages": [
-        "population-estimates-example",
-        "american-community-survey-(acs)-example",
-        "group-call-example",
-        "time-series-dataset-example"
-      ],
-      "root": "example-api-queries"
-    },
-    {
-      "group": "Ucgid Predicate: Alternative Option to Specify Geographies",
-      "pages": [
-        "using-ucgid-for-collections-of-geographies",
-        "geographic-variants",
-        "geographic-components",
-        "finding-fully-qualified-geo-ids",
-        "using-ucgid-for-individual-geographies"
-      ],
-      "root": "ucgid-predicate"
-    },
-    "query-limits",
-    "api-key",
-    "resources-for-learning-more",
-    "contact-us"
+    }
   ]
 },
   "logo": {
