@@ -1,39 +1,41 @@
 ---
-title" "Ucgid Predicate: Alternative Option to Specify Geographies"
+title" "Ucgid Predicate: "Alternative Option to Specify Geographies\""
+title: "Ucgid Predicate: Alternative Option to Specify Geographies"
 ---
 
 Rather than using the standard geography predicates, many datasets in the Census API also allow you to use the Uniform Census Geography Identifier (ucgid) predicate &ucgid to specify your desired geographies.
 
-Benefits of using ***&ucgid*** to select your geography:
+Benefits of using **_&ucgid_** to select your geography:
 
 - It allows you to get data for multiple levels of geography in the same API query
 
-   Example: `&ucgid=0400000US24,0500000US24017` provides results for Maryland and Charles County, MD
-
+  Example: `&ucgid=0400000US24,0500000US24017` provides results for Maryland and Charles County, MD
 - It allows you to access data for collections of geographies that are not accessible using the standard geography predicates
 
-   Example: `&ucgid=pseudo(0400000US24$8600000)` provides results for all ZIP Code Tabulation Areas fully/partially within Maryland
+  Example: `&ucgid=pseudo(0400000US24$8600000)` provides results for all ZIP Code Tabulation Areas fully/partially within Maryland
 
-Drawbacks of using ***&ucgid*** to specify your geography:
+Drawbacks of using **_&ucgid_** to specify your geography:
+
 - You must specify the fully qualified GEOID of the area(s) you want to include in your query.
 - The ucgid predicate is not available for every dataset in the API. If available, ucgid will appear in the list of variables on the dataset page.
 
 ### Using ucgid for Individual Geographies
 
-Use the ucgid predicate: ***&ucgid=*** and then type the fully qualified GEO ID. In the below example, the ucgid predicate provides results for New York city, NY &ucgid=1600000US3651000
+Use the ucgid predicate: **_&ucgid=_** and then type the fully qualified GEO ID. In the below example, the ucgid predicate provides results for New York city, NY &ucgid=1600000US3651000
 
 `https://api.census.gov/data/2022/acs/acs1/profile?get=NAME,DP05_0001E&ucgid=1600000US3651000`
 
 To specify individual geographies using ucgid, you will need to know the fully qualified GEO ID for that geography.
 
 Fully qualified GEO IDs consist of:
+
 - 3-character summary level
 - 2-character geographic variant
 - 2-character geographic component
 - US
 - Numeric codes that uniquely identify the geographic area. These may include:
-   - InterNational Committee for Information Technology Standards (INCITS) codes, formerly Federal Information Process Standards (FIPS) codes.
-   - Other codes assigned by the Census Bureau, U.S. Department of Education, and individual states for geographic areas not covered by INCITS.
+  - InterNational Committee for Information Technology Standards (INCITS) codes, formerly Federal Information Process Standards (FIPS) codes.
+  - Other codes assigned by the Census Bureau, U.S. Department of Education, and individual states for geographic areas not covered by INCITS.
 
 As an example, consider the fully qualified GEO ID for New York City, NY: 1600000US3651000
 
@@ -47,15 +49,15 @@ As an example, consider the fully qualified GEO ID for New York City, NY: 160000
 **Table 1: Ucgid Examples for Individual Geographies**
 
 | Geography Name | Fully Qualified GEO ID | Ucgid Predicate |
-| -------- | -------- | -------- | 
+| --- | --- | --- |
 | Mohave County, Arizona | `0500000US04015`<br />050 = Summary level for county<br />00 = No geographic variant<br />00 = Not a geographic component<br />US = United States<br />04 = Arizona<br />015 = Mohave County | `&ucgid=0500000US04015` |
-| Houston-Pasadena-The Woodlands, Texas Metro Area | `310M600US26420`<br />310 = Summary level for metro/micro area<br />M6 = Variant for 2020 vintage of metro/micro areas<br />00 = Not a geographic component<br />US = United States<br />26420 = Houston-Pasadena-The Woodlands,TX Metro Area| `&ucgid=310M600US26420` |
+| Houston-Pasadena-The Woodlands, Texas Metro Area | `310M600US26420`<br />310 = Summary level for metro/micro area<br />M6 = Variant for 2020 vintage of metro/micro areas<br />00 = Not a geographic component<br />US = United States<br />26420 = Houston-Pasadena-The Woodlands,TX Metro Area | `&ucgid=310M600US26420` |
 | Fern Forest CDP, Hawaii | `1600000US1507675`<br />160 = Summary level for place<br />00 = No geographic variant<br />00 = Not a geographic component<br />US = United States<br />15 = Hawaii<br />07675 = Fern Forest CDP | `&ucgid=1600000US1507675` |
-| ZIP Code Tabulation Area<br />(ZCTA) 15007| `860Z200US15007`<br />860 = Summary level for ZCTA<br />Z2 = Variant for 2020 vintage of ZCTAs<br />00 = Not a geographic component<br />US = United States<br />15007 = ZCTA 15007| `&ucgid=860Z200US15007` |
-| Congressional District 3, Indiana | `5001800US1803`<br />500 = Summary level for congressional district<br />18 = Variant for 118th Congressional District boundaries<br />00 = Not a geographic component<br />US = United States<br />18 = Indiana<br />03 = Congressional District 3| `&ucgid=5001800US1803` |
-| Census Tract 206, DeKalb County, Georgia | `1400000US13089020600`<br />140 = Summary level for census tract<br />00 = No geographic variant<br />00 = Not a geographic component<br />US = United States<br />13 = Georgia<br />089 = DeKalb County<br />020600 = Census tract 206| `&ucgid=1400000US13089020600` |
-| Block Group 2, Census Tract 104.01, Jersey County, Illinois | `1500000US170830104012`<br />150 = Summary level for census tract<br />00 = No geographic variant<br />00 = Not a geographic component<br />US = United States<br />17 = Illinois<br />083 = Jersey County<br />010401 = Census Tract 104.01<br />2 = Block Group 2| `&ucgid=1500000US170830104012` |
-| Block 1004, Block Group 1, Census Tract 6, Benton County, Oregon | `1000000US410030006001004`<br />100 = Summary level for block<br />00 = No geographic variant<br />00 = Not a geographic component<br />US = United States<br />41 = Oregon<br />003 = Benton County<br />00600 = Census Tract 6<br />1004 = Block 1004| `&ucgid=1000000US410030006001004` |
+| ZIP Code Tabulation Area<br />(ZCTA) 15007 | `860Z200US15007`<br />860 = Summary level for ZCTA<br />Z2 = Variant for 2020 vintage of ZCTAs<br />00 = Not a geographic component<br />US = United States<br />15007 = ZCTA 15007 | `&ucgid=860Z200US15007` |
+| Congressional District 3, Indiana | `5001800US1803`<br />500 = Summary level for congressional district<br />18 = Variant for 118th Congressional District boundaries<br />00 = Not a geographic component<br />US = United States<br />18 = Indiana<br />03 = Congressional District 3 | `&ucgid=5001800US1803` |
+| Census Tract 206, DeKalb County, Georgia | `1400000US13089020600`<br />140 = Summary level for census tract<br />00 = No geographic variant<br />00 = Not a geographic component<br />US = United States<br />13 = Georgia<br />089 = DeKalb County<br />020600 = Census tract 206 | `&ucgid=1400000US13089020600` |
+| Block Group 2, Census Tract 104.01, Jersey County, Illinois | `1500000US170830104012`<br />150 = Summary level for census tract<br />00 = No geographic variant<br />00 = Not a geographic component<br />US = United States<br />17 = Illinois<br />083 = Jersey County<br />010401 = Census Tract 104.01<br />2 = Block Group 2 | `&ucgid=1500000US170830104012` |
+| Block 1004, Block Group 1, Census Tract 6, Benton County, Oregon | `1000000US410030006001004`<br />100 = Summary level for block<br />00 = No geographic variant<br />00 = Not a geographic component<br />US = United States<br />41 = Oregon<br />003 = Benton County<br />00600 = Census Tract 6<br />1004 = Block 1004 | `&ucgid=1000000US410030006001004` |
 | United States – Rural | `0400043US51`<br />040 = Summary level for state<br />00 = No geographic variant<br />43 = Rural geographic component<br />US = United States<br />51 = Virginia | `&ucgid=0400043US51` |
 
 The ucgid predicate allows you to specify multiple geographies in the same API query by listing each desired fully qualified GEO ID separated by a comma. For example:
@@ -84,21 +86,19 @@ A geographic component is a subset of a given type of geographic area based on a
 ### Finding Fully Qualified GEO IDs
 
 The Census Bureau offers several options to find fully qualified GEO IDs for a particular geography:
+
 1. [TIGER/Line Shapefiles](https://www.census.gov/geographies/mapping-files/time-series/geo/tiger-line-file.html): Reference the GEOIDFQ field
 2. [TIGER/Line Geodatabases](https://www.census.gov/geographies/mapping-files/time-series/geo/tiger-geodatabase-file.html): Reference the GEOIDFQ field
 3. API: Include the GEO_ID variable in your API query. Example:
-   
-   `https://api.census.gov/data/2022/acs/acs5/profile?get=GEO_ID,NAME&for=congressional%20district:*&in=state:01`
 
+   `https://api.census.gov/data/2022/acs/acs5/profile?get=GEO_ID,NAME&for=congressional%20district:*&in=state:01`
    ![Example API Query and Output with GEO_ID Variable](images/figure5-exampleapiquery.png)
 
-   *Figure 5: Example API Query and Output with GEO_ID Variable - All Congressional Districts in Alabama from 2022 ACS 1-Year Data Profiles*
-
+   _Figure 5: Example API Query and Output with GEO_ID Variable - All Congressional Districts in Alabama from 2022 ACS 1-Year Data Profiles_
 4. **data.census.gov**: Download the ZIP file for a table that includes your desired geographies. The GEO_ID column of the file will show the fully qualified GEO ID.
-
    ![Example ZIP Download Output](images/figure6-examplezipdownload.png)
 
-   *Figure 6: Example ZIP Download Output from data.census.gov - All Congressional Districts in Alabama from 2022 ACS 1-Year Data Profiles*
+   _Figure 6: Example ZIP Download Output from data.census.gov - All Congressional Districts in Alabama from 2022 ACS 1-Year Data Profiles_
 
 You may also find it helpful to review additional reference materials to understand GEO IDs:
 
@@ -107,7 +107,7 @@ You may also find it helpful to review additional reference materials to underst
 
 ### Using ucgid for Collections of Geographies (Pseudo Geos)
 
-The ucgid predicate also allows you to retrieve data for collections of geographies, such as All Counties within Maryland or All Census Tracts within Jessamine County, Kentucky. This functions similarly to using the wildcard functionality (*) when using the standard geography predicates (&for and &in) – except the ucgid predicate provides access to even more options to request data for collections of geographies. “All Census Tracts in the U.S.” or “All ZIP Code Tabulation Areas fully/partially within Maryland” are some examples of collections of geographies that are exclusively available by using ucgid.
+The ucgid predicate also allows you to retrieve data for collections of geographies, such as All Counties within Maryland or All Census Tracts within Jessamine County, Kentucky. This functions similarly to using the wildcard functionality (\*) when using the standard geography predicates (&for and &in) – except the ucgid predicate provides access to even more options to request data for collections of geographies. “All Census Tracts in the U.S.” or “All ZIP Code Tabulation Areas fully/partially within Maryland” are some examples of collections of geographies that are exclusively available by using ucgid.
 
 Use the ucgid predicate: &ucgid=pseudo and in parentheses, enter the joined parent/child GEO IDs. In the below example, the ucgid predicate provides results for All Counties within Maryland:
 
@@ -118,7 +118,7 @@ Use the ucgid predicate: &ucgid=pseudo and in parentheses, enter the joined pare
 GEO IDs for collections of geographies (pseudo geos), consist of:
 
 - The fully qualified GEO ID of the parent geography. The parent geography is a single reference geography when considering whether other geographies intersect with it.
-- A dollar sign ($) to represent the joining of two geographies.
+- A dollar sign (\$) to represent the joining of two geographies.
 - The 7-character ID representing the type of geographic area for the child geographies. Child geographies are the collection of geographic areas that intersect with the parent geography, meaning they are fully and/or partially contained within the parent geography.
 
 As an example, consider the ucgid predicate for All Counties within Maryland:
@@ -126,22 +126,21 @@ As an example, consider the ucgid predicate for All Counties within Maryland:
 `&ucgid=pseudo(0400000US24$0500000)`
 
 - 0400000US24 = Fully qualified GEO ID for Maryland (parent geography)
-- $ = Symbol that represents the joining of two geographies
+- \$ = Symbol that represents the joining of two geographies
 - 0500000 = All Counties (child geography)\*
-
-   > \*The first 3 characters always indicate the child geography’s summary level, in this case, 050 for counties. This is typically followed by four zeros, with a few exceptions noted in column B of the [List of Available Collections of Geographies](https://www2.census.gov/data/api-documentation/list-of-available-collections-of-geographies.xlsx).
+  > \*The first 3 characters always indicate the child geography’s summary level, in this case, 050 for counties. This is typically followed by four zeros, with a few exceptions noted in column B of the [List of Available Collections of Geographies](https://www2.census.gov/data/api-documentation/list-of-available-collections-of-geographies.xlsx).
 
 The [List of Available Collections of Geographies](https://www2.census.gov/data/api-documentation/list-of-available-collections-of-geographies.xlsx) also provides documentation of each possible geography collection that can be used in the API. Please be aware that not every collection of geography is available for every dataset. In most cases, collections of geographies are supported when a dataset provides data for the both the parent and child summary levels.
 
 **Table 2: Ucgid Examples for Collections of Geographies**
 
-| Geography Collection Name | GEO ID for Geography Collection  | Ucgid Predicate  |
-| ---------- | -------------------------------- | ---------------- |
-| All Counties within Arkansas | `0400000US05$0500000`<br />0400000US05 = Arkansas (parent geo)<br />$<br />0500000 = All counties (child geo)| `&ucgid=pseudo(0400000US05$0500000)` |
-| All Places within Louisiana | `0400000US22$1600000`<br />0400000US22 = Louisiana (parent geo)<br />$<br />1600000 = All places (child geo) | `&ucgid=pseudo(0400000US22$1600000)` |
-| All ZIP Code Tabulation Areas (ZCTAs) fully/partially within New Hampshire | `0400000US33$8600000`<br />0400000US33 = New Hampshire (parent geo)<br />$<br />8600000 = All ZCTAs (child geo) | `&ucgid=pseudo(0400000US33$8600000)` |
-| All Metropolitan and Micropolitan Statistical Areas fully/partially within Nebraska | `0400000US31$3100000`<br />0400000US31= Nebraska (parent geo)<br />$<br />3100000 = All metro/micro areas (child geo) | `&ucgid=pseudo(0400000US31$3100000)` |
-| All Census Tracts within Jessamine County, Kentucky | `0500000US21113$1400000`<br />0500000US21113 = Jessamine County (parent geo)<br />$<br />1400000 = All census tracts (child geo) | `&ucgid=pseudo(0500000US21113$1400000)` |
-| All Census Tracts fully/partially within Congressional District 1, Iowa | `5001800US1901$1400000`<br />5001800US1901 = Congressional District 1, IA (parent geo)<br />$<br />1400000 = All census tracts (child geo) | `&ucgid=pseudo(5001800US1901$1400000)` |
-| All Block Groups within Census Tract 19, Fairbanks North Star Borough, Alaska | `1400000US02090001900$1500000`<br />1400000US02090001900 = Census Tract 19, Fairbanks North Star Borough, AK (parent geo)<br />$<br />1500000 = All block groups (child geo) | `&ucgid=pseudo(1400000US02090001900$1500000)` |
-| All Blocks within Census Tract 9653.02, Somerset County, Maine | `1400000US23025965302$1000000`<br />1400000US23025965302 = Census Tract 9965.02,Somerset County, ME (parent geo)<br />$<br />1000000 = All blocks (child geo) | `&ucgid=pseudo(1400000US23025965302$1000000)` |
+| Geography Collection Name | GEO ID for Geography Collection | Ucgid Predicate |
+| --- | --- | --- |
+| All Counties within Arkansas | `0400000US05$0500000`<br />0400000US05 = Arkansas (parent geo)<br />\$<br />0500000 = All counties (child geo) | `&ucgid=pseudo(0400000US05$0500000)` |
+| All Places within Louisiana | `0400000US22$1600000`<br />0400000US22 = Louisiana (parent geo)<br />\$<br />1600000 = All places (child geo) | `&ucgid=pseudo(0400000US22$1600000)` |
+| All ZIP Code Tabulation Areas (ZCTAs) fully/partially within New Hampshire | `0400000US33$8600000`<br />0400000US33 = New Hampshire (parent geo)<br />\$<br />8600000 = All ZCTAs (child geo) | `&ucgid=pseudo(0400000US33$8600000)` |
+| All Metropolitan and Micropolitan Statistical Areas fully/partially within Nebraska | `0400000US31$3100000`<br />0400000US31= Nebraska (parent geo)<br />\$<br />3100000 = All metro/micro areas (child geo) | `&ucgid=pseudo(0400000US31$3100000)` |
+| All Census Tracts within Jessamine County, Kentucky | `0500000US21113$1400000`<br />0500000US21113 = Jessamine County (parent geo)<br />\$<br />1400000 = All census tracts (child geo) | `&ucgid=pseudo(0500000US21113$1400000)` |
+| All Census Tracts fully/partially within Congressional District 1, Iowa | `5001800US1901$1400000`<br />5001800US1901 = Congressional District 1, IA (parent geo)<br />\$<br />1400000 = All census tracts (child geo) | `&ucgid=pseudo(5001800US1901$1400000)` |
+| All Block Groups within Census Tract 19, Fairbanks North Star Borough, Alaska | `1400000US02090001900$1500000`<br />1400000US02090001900 = Census Tract 19, Fairbanks North Star Borough, AK (parent geo)<br />\$<br />1500000 = All block groups (child geo) | `&ucgid=pseudo(1400000US02090001900$1500000)` |
+| All Blocks within Census Tract 9653.02, Somerset County, Maine | `1400000US23025965302$1000000`<br />1400000US23025965302 = Census Tract 9965.02,Somerset County, ME (parent geo)<br />\$<br />1000000 = All blocks (child geo) | `&ucgid=pseudo(1400000US23025965302$1000000)` |

@@ -10,9 +10,6 @@
   "favicon": "/favicon.svg",
   "navigation": {
   "pages": [
-    "purpose",
-    "what-is-the-census-data-api",
-    "available-datasets",
     {
       "group": "Core Concepts",
       "root": "core-concepts",
