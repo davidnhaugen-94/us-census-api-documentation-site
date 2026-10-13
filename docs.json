@@ -25,7 +25,7 @@
   },
   "pages": [
     {
-      "group": "User Guide",
+      "group": "Census Data API User Guide",
       "pages": [
         "purpose",
         "what-is-census-data-api",
