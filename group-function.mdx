@@ -1,0 +1,9 @@
+---
+title: "Group Function"
+---
+
+The group function group([insert table ID]) allows you to get results for an entire table in one easy command; e.g. group(S0101). It provides results for all variables without having to individually include them in the API call. Even if the table has more than 50 variables, the group call will provide results for all variables in that table.
+
+For example, this API query provides results for all 912 variables for table S0101 from the American Community Survey
+
+`https://api.census.gov/data/2019/acs/acs1/subject?get=group(S0101)&for=state:*`
