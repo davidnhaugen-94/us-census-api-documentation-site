@@ -1,6 +1,6 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "mint",
+  "theme": "maple",
   "name": "US Census Data API",
   "colors": {
     "primary": "#16A34A",
@@ -36,6 +36,7 @@
         "attributes",
         "get-function",
         "predicate",
+        "response-format–json",
         "group-function"
       ]
     },
