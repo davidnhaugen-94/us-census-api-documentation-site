@@ -48,7 +48,7 @@ paths:
       operationId: getPopEstimatesByCharacteristics
       tags:
         - Population Estimates
-      summary: Get population estimates by age group, sex, race, and Hispanic origin
+      summary: Get Population Estimates
       description: >-
         Returns data from the dataset *Population Estimates: Estimates by Age Group, Sex, Race, and Hispanic Origin* for the year you specify.
   
@@ -143,7 +143,7 @@ paths:
       operationId: getAcs1YearData
       tags:
         - American Community Survey
-      summary: Get American Community Survey 1-Year data
+      summary: Get ACS 1-Year data
       description: >-
         Returns data from the American Community Survey (ACS) 1-Year dataset for the year you specify.
 
@@ -231,7 +231,7 @@ paths:
       operationId: getMonthlyExportsByEndUse
       tags:
         - International Trade
-      summary: Get monthly U.S. exports by end-use code
+      summary: Get Monthly U.S. Exports
       description: >-
         Returns data from the time series dataset *International Trade: Monthly U.S. Exports by End-Use Code*, such as the total value of exports for each Customs district.
 
