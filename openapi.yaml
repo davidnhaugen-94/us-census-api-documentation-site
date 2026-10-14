@@ -49,15 +49,14 @@ paths:
       tags:
         - Population Estimates
       summary: Get Population Estimates
-      description: >-
+      description: |-
         Returns data from the dataset *Population Estimates: Estimates by Age Group, Sex, Race, and Hispanic Origin* for the year you specify.
   
         Use `get` to choose variables (for example, `NAME` for the geography name and `POP` for the total population), add predicates such as `HISP` to filter the results, and use `for` to choose geographies. This dataset provides results at the state, county, and national level only. Use `for=us:*` for the national total. The geographies available can change from year to year.
-       |-
+
         For the full list of variables, see the [variables page](https://api.census.gov/data/2019/pep/charagegroups/variables.html). For available geographies and more queries, see the [examples page](https://api.census.gov/data/2019/pep/charagegroups/examples.html).
-       |-
+
         **Example request:** Hispanic population by state, 2019:
-       |-
         
         `GET /2019/pep/charagegroups?get=NAME,POP&HISP=2&for=state:*`    
       # Verified on the examples page and in testing (October 2026).
