@@ -56,7 +56,7 @@ paths:
 
         For the full list of variables, see the [variables page](https://api.census.gov/data/2019/pep/charagegroups/variables.html). For available geographies and more queries, see the [examples page](https://api.census.gov/data/2019/pep/charagegroups/examples.html).
 
-        **Example Request:**
+        **Example Request**
         
         Hispanic population by state, 2019:
         
