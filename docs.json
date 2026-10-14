@@ -82,9 +82,8 @@
   },
   "navbar": {
     "primary": {
-      "type": "button",
-      "label": "Dashboard",
-      "href": "https://app.mintlify.com"
+      "type": "github",
+      "href": "https://github.com/davidnhaugen-94/us-census-api-documentation-site"
     }
   },
   "contextual": {
