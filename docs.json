@@ -54,7 +54,7 @@
           ]
         },
         {
-          "group": "Ucgid Predicate: Alternative Option to Specify Geographies",
+          "group": "Ucgid Predicate",
           "root": "ucgid-predicate",
           "pages": [
             "using-ucgid-for-collections-of-geographies",
