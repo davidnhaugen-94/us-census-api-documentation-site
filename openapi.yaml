@@ -56,7 +56,9 @@ paths:
 
         For the full list of variables, see the [variables page](https://api.census.gov/data/2019/pep/charagegroups/variables.html). For available geographies and more queries, see the [examples page](https://api.census.gov/data/2019/pep/charagegroups/examples.html).
 
-        **Example request:** Hispanic population by state, 2019:
+        **Example Request:**
+        
+        Hispanic population by state, 2019:
         
         `GET /2019/pep/charagegroups?get=NAME,POP&HISP=2&for=state:*`    
       # Verified on the examples page and in testing (October 2026).
@@ -147,7 +149,7 @@ paths:
 
         Use `get` to choose variables, or `get=group(TABLE_ID)` to return every variable in a table, even if it has more than 50 variables. Use `for` to choose geographies.
 
-        **Variable naming conventions**
+        **Variable Naming Conventions**
 
         ACS variable names are alphanumeric codes, for example `B02015_009E`. The last characters tell you what kind of value the variable holds:
 
@@ -163,7 +165,7 @@ paths:
 
         For details, see the [ACS Variable Types page](https://www.census.gov/data/developers/data-sets/acs-1year/notes-on-acs-api-variable-types.html).
 
-        **Null values**
+        **Null Values**
 
         A value of `null` means no data was entered for that answer.
 
@@ -235,7 +237,7 @@ paths:
 
         A time series dataset holds data for several points in time in one dataset, so this path has no year in the URL. Instead, you choose the time period with a predicate.
 
-        **Specifying the time period (required)**
+        **Specifying the Time Period (Required)**
 
         You must include a time period, in one of two ways:
 
@@ -247,7 +249,7 @@ paths:
 
         The option you use changes the response columns: `YEAR` and `MONTH` return `YEAR` and `MONTH` columns, while `time` returns a single `time` column instead. Using both is allowed and returns all three columns.
 
-        **Default values ("Default Displayed")**
+        **Default Values ("Default Displayed")**
 
         In the API Discovery Tool, the `DISTRICT` variable shows "Default Displayed" in the Required column. This means the variable covers several categories, and by default the API returns data for every district code. To limit the results to specific districts, add a `DISTRICT` predicate. If you're not sure what a variable's default is, include it in a request and look at the results.
 
