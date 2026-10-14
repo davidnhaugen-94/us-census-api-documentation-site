@@ -2,7 +2,7 @@ openapi: 3.1.0
  
 info:
   title: Census Data API
-  description: >-
+  description: |-
     This is an unofficial OpenAPI description of the U.S. Census Bureau's Census Data API, created from the Census Data API User Guide (PDF, July 30, 2024). It is not affiliated with or endorsed by the U.S. Census Bureau.
  
     The Census Data API gives the public access to raw statistical data from Census Bureau data programs. The data is usually tied to a geographic area (identified by a FIPS code) and a vintage (reference year).
@@ -48,7 +48,7 @@ paths:
       operationId: getPopEstimatesByCharacteristics
       tags:
         - Population Estimates
-      summary: Get Population Estimates
+      summary: Get Population Estimates 
       description: |-
         Returns data from the dataset *Population Estimates: Estimates by Age Group, Sex, Race, and Hispanic Origin* for the year you specify.
   
@@ -72,16 +72,14 @@ paths:
         - name: HISP
           in: query
           required: false
-          description: >-
+          description: |-
             Filters results by Hispanic origin:
- 
- 
+  
             - `0`: Total population
  
             - `1`: Non-Hispanic
  
             - `2`: Hispanic
- 
  
             See the [HISP variable](https://api.census.gov/data/2019/pep/charagegroups/variables/HISP.json) in the API Discovery Tool, or the [Population Estimates categorical variables](https://www.census.gov/data/developers/data-sets/popest-popproj/popest/popest-vars.Vintage_2019.html) page. If you leave out `HISP`, the API returns the total population (the same values as `HISP=0`), without a `HISP` column in the response.
           # Verified in testing (October 2026).
@@ -130,7 +128,7 @@ paths:
       - name: year
         in: path
         required: true
-        description: >-
+        description: |-
           The data year, for example `2024`. ACS 1-Year data is available for 2005 through 2024, except 2020: the Census Bureau did not release standard 2020 1-Year estimates because the pandemic disrupted data collection.
 
           Requesting an unavailable year doesn't always return an error. For 2004, the API returns 200 OK with a JSON description of the other ACS 1-Year datasets for that year (Public Use Microdata Sample), not data rows. Check that the response is an array before reading it.
@@ -144,7 +142,7 @@ paths:
       tags:
         - American Community Survey
       summary: Get ACS 1-Year data
-      description: >-
+      description: |-
         Returns data from the American Community Survey (ACS) 1-Year dataset for the year you specify.
 
         Use `get` to choose variables, or `get=group(TABLE_ID)` to return every variable in a table, even if it has more than 50 variables. Use `for` to choose geographies.
@@ -232,7 +230,7 @@ paths:
       tags:
         - International Trade
       summary: Get Monthly U.S. Exports
-      description: >-
+      description: |-
         Returns data from the time series dataset *International Trade: Monthly U.S. Exports by End-Use Code*, such as the total value of exports for each Customs district.
 
         A time series dataset holds data for several points in time in one dataset, so this path has no year in the URL. Instead, you choose the time period with a predicate.
@@ -344,7 +342,7 @@ components:
     for:
       name: for
       in: query
-      description: >-
+      description: |-
         Restricts results to a geography, written as `level:code`. Use a wildcard (`*`) for all values at that level, or separate several codes with commas.
  
         Examples:
@@ -378,7 +376,7 @@ components:
       # Note: `name: in` is the query parameter's name. The `in: query` line below is the OpenAPI field that says where the parameter goes.
       name: in
       in: query
-      description: >-
+      description: |-
         Used with `for` to restrict results to areas inside a larger geography, written as `level:code`. Wildcards (`*`) are allowed, so `for=county:*&in=state:*` returns every county in every state.
 
         To give more than one parent level, separate them with a space (`%20` in the URL), for example `in=state:17 county:031`, or repeat the parameter: `in=state:17&in=county:*`.
@@ -404,7 +402,7 @@ components:
     ucgid:
       name: ucgid
       in: query
-      description: >-
+      description: |-
         An alternative to `for` and `in` for choosing geographies, using fully qualified GEO IDs (Uniform Census Geography Identifiers). Use either `ucgid` or `for`/`in`, not both.
 
         **One or more individual geographies:** list GEO IDs separated by commas. Unlike `for`, you can mix geography levels in one request, for example a state and one of its counties:
@@ -432,7 +430,7 @@ components:
     time:
       name: time
       in: query
-      description: >-
+      description: |-
         Time series datasets only. Restricts results to a point or range in time. Use `+` between words in ranges. Wildcards are not allowed.
  
         Examples:
