@@ -92,10 +92,5 @@
   },
   "interaction": {
     "drilldown": false
-  },
-  "logo": {
-    "light": "/images/USCENSUS_IDENTITY_SOLO_BLACK_1.5in_R_no_padding.svg",
-    "dark": "/images/USCENSUS_IDENTITY_SOLO_BLACK_1.5in_R_no_padding.svg",
-    "href": "https://www.census.gov/en.html"
   }
 }
