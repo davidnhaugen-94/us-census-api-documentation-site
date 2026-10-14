@@ -81,10 +81,6 @@
     "dark": "/logo/dark.svg"
   },
   "navbar": {
-    "primary": {
-      "type": "github",
-      "href": "https://github.com/davidnhaugen-94/us-census-api-documentation-site"
-    }
   },
   "contextual": {
     "options": [
