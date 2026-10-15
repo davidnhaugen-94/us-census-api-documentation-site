@@ -1,55 +1,38 @@
-# Mintlify Starter Kit
+# U.S. Census Data API Documentation Site
 
-Use the starter kit to get your docs deployed and ready to customize.
+An online documentation site and interactive API reference for the U.S. Census Bureau's Census Data API, converted from the original PDF user guide.
 
-Click the green **Use this template** button at the top of this repo to copy the Mintlify starter kit. The starter kit contains examples with
+> [!NOTE]
+> This is an unofficial documentation project created from the [Census Data API User Guide](https://www.census.gov/content/dam/Census/data/developers/api-user-guide/api-user-guide.pdf) (PDF, July 30, 2024). It is not affiliated with or endorsed by the U.S. Census Bureau.
 
-- Guide pages
-- Navigation
-- Customizations
-- API reference pages
-- Use of popular components
+**Live site:** [haugen-tech-docs.mintlify.site](https://haugen-tech-docs.mintlify.site/purpose)
 
-**[Follow the full quickstart guide](https://starter.mintlify.com/quickstart)**
+## About the Project
 
-## AI-assisted writing
+I created this as a self-directed portfolio project to convert an existing PDF user guide into a modern, docs-as-code documentation site. The project includes:
 
-Set up your AI coding tool to work with Mintlify:
+- **User Guide**: The original guide converted to Markdown and split into individual pages. The structure and TOC match the original so existing users can find what they need.
+- **API Reference**: An OpenAPI specification covering three Census datasets (Population Estimates, American Community Survey, and International Trade), with an interactive "Try it" panel for each endpoint.
+- **Cross-Linking**: Each example in the user guide links to its matching endpoint in the API Reference.
 
-```bash
-npx skills add https://mintlify.com/docs
-```
+## Tools Used
 
-This command installs Mintlify's documentation skill for your configured AI tools like Claude Code, Cursor, Windsurf, and others. The skill includes component reference, writing standards, and workflow guidance.
+- **Mintlify**: Site build, hosting, and API reference generation
+- **OpenAPI (YAML)**: API specification
+- **MDX/Markdown**: Page content
+- **Git/GitHub and SourceTree**: Version control and deployment
 
-See the [AI tools guides](/ai-tools) for tool-specific setup.
+## Repository Structure
 
-## Development
+| File or Folder | Description |
+| --- | --- |
+| `docs.json` | Site settings and sidebar navigation |
+| `openapi.yaml` | OpenAPI specification for the API Reference |
+| `*.mdx` | User guide and overview pages |
+| `images/` | Images used in the documentation |
+| `logo/` | Site logo files |
 
-Install the [Mintlify CLI](https://www.npmjs.com/package/mint) to preview your documentation changes locally. To install, use the following command:
+## Author
 
-```
-npm i -g mint
-```
-
-Run the following command at the root of your documentation, where your `docs.json` is located:
-
-```
-mint dev
-```
-
-View your local preview at `http://localhost:3000`.
-
-## Publishing changes
-
-Install our GitHub app from your [dashboard](https://dashboard.mintlify.com/settings/organization/github-app) to propagate changes from your repo to your deployment. Changes are deployed to production automatically after pushing to the default branch.
-
-## Need help?
-
-### Troubleshooting
-
-- If your dev environment isn't running: Run `mint update` to ensure you have the most recent version of the CLI.
-- If a page loads as a 404: Make sure you are running in a folder with a valid `docs.json`.
-
-### Resources
-- [Mintlify documentation](https://mintlify.com/docs)
+David Haugen, Information Architect & Senior Technical Writer
+[Portfolio](https://davidnhaugen-94.github.io/) • [LinkedIn](https://www.linkedin.com/in/davidnhaugen)
