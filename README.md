@@ -19,6 +19,7 @@ I created this as a self-directed portfolio project to convert an existing PDF u
 
 - **Mintlify**: Site build, hosting, and API reference generation
 - **OpenAPI (YAML)**: API specification
+- **Visual Studio Code**: Editing the OpenAPI specification and MDX pages
 - **MDX/Markdown**: Page content
 - **Git/GitHub and SourceTree**: Version control and deployment
 
