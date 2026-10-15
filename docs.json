@@ -17,6 +17,11 @@
         "icon": "landmark"
       },
       {
+        "anchor": "Original PDF Guide",
+        "icon": "file-pdf",
+        "href": "https://www.census.gov/content/dam/Census/data/developers/api-user-guide/api-user-guide.pdf"
+      },
+      {
         "anchor": "GitHub Repo",
         "href": "https://github.com/davidnhaugen-94/us-census-api-documentation-site",
         "icon": "github"
@@ -72,7 +77,8 @@
     },
     {
       "group": "API Reference",
-      "openapi": "openapi.yaml"
+      "openapi": "openapi.yaml",
+      "root": "api-reference-overview"
     }
   ]
 },
